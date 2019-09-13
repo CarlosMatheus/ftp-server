@@ -1,6 +1,15 @@
+from utils import \
+    DEFAULT_ADDRESS, \
+    READING, \
+    TEST_STRING, \
+    TESTING, \
+    DEFAULT_SEND_BACK_MESSAGE, \
+    CONNECTION_BYTES, \
+    FILE_STRING, \
+    WRITING_FILE
 import socket
-from utils import DEFAULT_ADDRESS, READING, TEST_STRING, TESTING, DEFAULT_SEND_BACK_MESSAGE
 from command_line import CommandLine
+from file_manager import FileManager
 
 
 class Server:
@@ -11,25 +20,45 @@ class Server:
         self.server.bind(self.address)
         self.server.listen(5)
         self.command_line = self.setup_command_line()
-        self.state = READING
+        self.state = WRITING_FILE
+        self.state = TESTING
         self.data_received = ''
         self.function_switcher = self.setup_function_switcher()
+        self.file_manager = FileManager()
+
+        # todo: change this part:
+        self.current_folder = ''
+        self.file_name = 'ITA_logo.png'
 
         self.execute_server_listener()
 
     def execute_server_listener(self):
         while True:
+            print('a')
             connection, address = self.server.accept()
+            print('b')
             received_byte_list = self.get_byte_list(connection)
-            data_received = self.decode(received_byte_list)
-            self.update_state(data_received)
+            print('c')
+            self.data_received = self.decode(received_byte_list)
+            print('d')
+            self.update_state()
+            print('e')
             self.function_switcher[self.state]()
+            print('f')
 
     def setup_function_switcher(self):
         return {
             READING: self.read_command,
             TESTING: self.execute_test,
+            WRITING_FILE: self.write_file,
         }
+
+    def write_file(self):
+        # (file_name, file_data) = self.data_received.split(FILE_STRING)
+        print('writing file: %s' % self.file_name)
+        self.file_manager.write_file(self.data_received, self.current_folder, self.file_name)
+        # todo: change state
+        self.state = TESTING
 
     def read_command(self):
         command, arg_list = self.unpack(self.data_received)
@@ -39,12 +68,15 @@ class Server:
         message = self.data_received.replace(TEST_STRING, '')
         print(message)
 
-    def update_state(self, data_received):
-        if data_received.startswith(TEST_STRING):
+    def update_state(self):
+        if self.state == WRITING_FILE:
+            return
+        if self.data_received.startswith(TEST_STRING):
             self.state = TESTING
+        elif self.data_received.startswith(FILE_STRING):
+            self.state = WRITING_FILE
         else:
             self.state = READING
-        self.data_received = data_received
 
     def unpack(self, data_received):
         lt = data_received.split(' ')
@@ -53,15 +85,18 @@ class Server:
     def get_byte_list(self, connection):
         received_byte_list = list()
         while True:
-            data = connection.recv(4096)
+            data = connection.recv(CONNECTION_BYTES)
             if not data:
                 break
             received_byte_list.append(data)
-            connection.send(DEFAULT_SEND_BACK_MESSAGE.encode())
+            # connection.sendall(DEFAULT_SEND_BACK_MESSAGE.encode())
         return received_byte_list
 
     def decode(self, received_byte_list):
-        return b''.join(received_byte_list).decode()
+        if self.state == WRITING_FILE:
+            return b''.join(received_byte_list)
+        else:
+            return b''.join(received_byte_list).decode()
 
     def setup_command_line(self):
         method_list = [
