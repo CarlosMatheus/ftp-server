@@ -1,5 +1,5 @@
 *.idea
 *DS_STORE
 venv
-test
-
+test*
+*__pycache__/
