@@ -11,4 +11,7 @@ class CommandLine:
             self.method_hash[command] = method_list[idx]
 
     def execute_command(self, command, arg_list):
-        if command in
+        if command in self.method_hash:
+            self.method_hash[command](arg_list)
+        else:
+            raise Exception("Unknown command")

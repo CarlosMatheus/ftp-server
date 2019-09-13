@@ -13,4 +13,3 @@ class Client:
         self.socket.send(b'sending some bytes')
         self.socket.recv(self.pack_size)
         self.socket.close()
-
