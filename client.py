@@ -28,4 +28,3 @@ class Client:
         with open(path, 'rb') as f:
             self.socket.sendfile(f, 0)
         self.socket.close()
-            # self.send_message(FILE_STRING.encode() + file_name.encode() + FILE_STRING.encode() + file_data, encoded=True)
