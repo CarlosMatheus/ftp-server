@@ -21,7 +21,7 @@ class Server:
         self.server.listen(5)
         self.command_line = self.setup_command_line()
         self.state = WRITING_FILE
-        self.state = TESTING
+        # self.state = TESTING
         self.data_received = ''
         self.function_switcher = self.setup_function_switcher()
         self.file_manager = FileManager()
@@ -89,7 +89,7 @@ class Server:
             if not data:
                 break
             received_byte_list.append(data)
-            # connection.sendall(DEFAULT_SEND_BACK_MESSAGE.encode())
+            connection.sendall(DEFAULT_SEND_BACK_MESSAGE.encode())
         return received_byte_list
 
     def decode(self, received_byte_list):
