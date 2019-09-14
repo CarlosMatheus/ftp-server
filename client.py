@@ -39,7 +39,7 @@ class Client(Commander):
         }
 
     def execute_read_command_loop(self):
-        self.data_received = input(self.address[0] + ':' + str(self.address[1]) + ' > ' + self.current_path + '$')
+        self.data_received = input(self.address[0] + ':' + str(self.address[1]) + ' > ' + self.current_path + '$ ')
         self.read_command()
 
     def authenticate_user(self):
@@ -101,8 +101,17 @@ class Client(Commander):
             self.current_path = answer
 
     def ls_command(self, args_list):
-        print('todo: implement this')
-        pass
+        if not args_list:
+            message = "%s" % (COMMAND_LIST[1])
+        else:
+            message = "%s %s" % (COMMAND_LIST[3], args_list[0])
+        answer = self.send_message(message).decode()
+        if self.is_error(answer):
+            self.throw_error(answer)
+        else:
+            lt = answer[1:-1].split(', ')
+            for item in lt:
+                print(item[1:-1])
 
     def pwd_command(self, args_list):
         print(self.current_path)

@@ -114,6 +114,9 @@ class Server(Commander):
     def send_error(self, error):
         self.connection.sendall(('%s%s' % (INVALID, error)).encode())
 
+    def send_response(self, response):
+        self.connection.sendall(response.encode())
+
     def cd_command(self, args_list):
         if not args_list:
             self.connection.sendall('%sNo path sent' % INVALID)
@@ -127,7 +130,14 @@ class Server(Commander):
                 self.connection.sendall(('%s%s' % (INVALID, error)).encode())
 
     def ls_command(self, args_list):
-        pass
+        if not args_list:
+            error, lt = self.file_manager.list_items()
+        else:
+            error, lt = self.file_manager.list_items(args_list)
+        if error:
+            self.send_error(error)
+        else:
+            self.send_response(str(lt))
 
     def pwd_command(self, args_list):
         if self.file_manager.current_path == '':

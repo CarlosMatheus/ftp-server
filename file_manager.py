@@ -1,6 +1,7 @@
 from utils import ROOT_DIR_NAME, server_log
 from os import path
 from os import mkdir
+from os import listdir
 
 
 class FileManager:
@@ -82,3 +83,14 @@ class FileManager:
             return ''
         else:
             return 'Directory already exist'
+
+    def list_items(self, directory=None):
+        if directory is None:
+            directory = self.current_path
+        error, simplified_path = self.validate_path(directory)
+        if error:
+            return error, []
+        else:
+            abs_path = path.join(self.root_folder_abs_directory, simplified_path)
+            lt = listdir(abs_path)
+            return '', lt
