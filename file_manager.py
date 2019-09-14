@@ -18,9 +18,20 @@ class FileManager:
         print(self.root_folder_abs_directory)
 
     def resolve_path(self, relative_path):
+        error, simplified_path = self.validate_path(relative_path)
+        if not error:
+            self.current_path = simplified_path
+        return error
+
+    def validate_path(self, relative_path):
+        """
+        Validates a path returning an error message and the simplified path
+        :param relative_path:
+        :return: error (in case there is an error), simplified path in case there is no error
+        """
         if not relative_path:
-            self.current_path = ''
-            return ''
+            current_path = ''
+            return '', current_path
         else:
             if relative_path.startswith('/'):
                 complete_path = self.root_folder_abs_directory + relative_path
@@ -29,17 +40,20 @@ class FileManager:
             complete_path = path.normpath(path.realpath(complete_path))
             server_log("Trying to access: %s" % complete_path)
             if not complete_path.startswith(self.root_folder_abs_directory):
-                return 'Cannot go outside root folder'
+                return 'Cannot go outside root folder', ''
             else:
                 if not path.exists(complete_path):
-                    return 'Directory not found'
+                    return 'Directory not found', ''
                 elif not path.isdir(complete_path):
-                    return 'Not a directory'
+                    return 'Not a directory', ''
                 else:
-                    self.current_path = path.relpath(complete_path, self.root_folder_abs_directory)
-                    if self.current_path == '.':
-                        self.current_path = ''
-                    return ''
+                    current_path = path.relpath(complete_path, self.root_folder_abs_directory)
+                    if current_path == '.':
+                        current_path = ''
+                    return '', current_path
+
+    def validate_file(self, relative_path):
+        pass
 
     def write_file(self, file_data, file_path, file_name):
         file_path = path.join(ROOT_DIR_NAME, file_path)
