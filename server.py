@@ -145,7 +145,7 @@ class Server(Commander):
         else:
             self.connection.sendall(self.file_manager.current_path.encode())
 
-    def mkdir_command(self, args_list):
+    def modify_folder(self, args_list, modifier_function):
         if not args_list:
             self.send_error('Need to specify the directory name')
         else:
@@ -154,36 +154,22 @@ class Server(Commander):
             if not dir_path.startswith('/'):
                 dir_path = path.join(self.file_manager.current_path, dir_path)
 
-            abs_path, new_dir_name = path.split(dir_path)
+            abs_path, dir_name = path.split(dir_path)
             error, simplified_abs_path = self.file_manager.validate_absolute_path(abs_path)
             if error:
                 self.send_error(error)
             else:
-                error = self.file_manager.create_directory(simplified_abs_path, new_dir_name)
+                error = modifier_function(simplified_abs_path, dir_name)
                 if error:
                     self.send_error(error)
                 else:
                     self.connection.sendall('ok'.encode())
+
+    def mkdir_command(self, args_list):
+        self.modify_folder(args_list, self.file_manager.create_directory)
 
     def rmdir_command(self, args_list):
-        if not args_list:
-            self.send_error('Need to specify the directory name')
-        else:
-            dir_path = args_list[0]
-
-            if not dir_path.startswith('/'):
-                dir_path = path.join(self.file_manager.current_path, dir_path)
-
-            abs_path, dir_name_to_delete = path.split(dir_path)
-            error, simplified_abs_path = self.file_manager.validate_absolute_path(abs_path)
-            if error:
-                self.send_error(error)
-            else:
-                error = self.file_manager.delete_directory(simplified_abs_path, dir_name_to_delete)
-                if error:
-                    self.send_error(error)
-                else:
-                    self.connection.sendall('ok'.encode())
+        self.modify_folder(args_list, self.file_manager.delete_directory)
 
     def get_command(self, args_list):
         pass
