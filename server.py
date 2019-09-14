@@ -10,7 +10,8 @@ from utils import \
     USER_AUTH, \
     CONNECTION_ACCEPTED, \
     CONNECTION_DENIED, \
-    INVALID
+    INVALID, \
+    server_log
 import socket
 from command_line import CommandLine
 from file_manager import FileManager
@@ -116,7 +117,11 @@ class Server(Commander):
             path = args_list[0]
             error = self.file_manager.resolve_path(path)
             if not error:
-                self.connection.sendall(self.file_manager.current_path.encode())
+                server_log('Access denied')
+                if self.file_manager.current_path == '':
+                    self.connection.sendall(' '.encode())
+                else:
+                    self.connection.sendall(self.file_manager.current_path.encode())
             else:
                 self.connection.sendall(('%s%s' % (INVALID, error)).encode())
 

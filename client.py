@@ -39,7 +39,7 @@ class Client(Commander):
         }
 
     def execute_read_command_loop(self):
-        self.data_received = input(self.address[0] + ':' + str(self.address[1]) + ' > ~' + self.current_path + '$')
+        self.data_received = input(self.address[0] + ':' + str(self.address[1]) + ' > ' + self.current_path + '$')
         self.read_command()
 
     def authenticate_user(self):
@@ -78,7 +78,7 @@ class Client(Commander):
         if not args_list:
             path = ''
         else:
-            if args_list[0] == '/' or args_list[0] == '~' or args_list[0] == '~/':
+            if args_list[0] == '/':
                 path = ''
             else:
                 path = args_list[0]

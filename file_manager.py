@@ -1,4 +1,4 @@
-from utils import ROOT_DIR_NAME
+from utils import ROOT_DIR_NAME, server_log
 from os import path
 from os import mkdir
 
@@ -6,23 +6,28 @@ from os import mkdir
 class FileManager:
 
     def __init__(self):
-        self.initiate_root_folder()
         self.root_folder_abs_directory = ''
-        self.current_path = ' '
+        self.current_path = ''
+
+        self.initiate_root_folder()
 
     def initiate_root_folder(self):
         if not path.exists(ROOT_DIR_NAME):
             mkdir(ROOT_DIR_NAME)
         self.root_folder_abs_directory = path.join(path.dirname(path.abspath(__file__)), ROOT_DIR_NAME)
-        # print(self.root_folder_abs_directory)
+        print(self.root_folder_abs_directory)
 
     def resolve_path(self, relative_path):
         if not relative_path:
-            self.current_path = ' '
+            self.current_path = ''
             return ''
         else:
-            complete_path = path.join(self.root_folder_abs_directory, path.join(self.current_path, relative_path))
+            if relative_path.startswith('/'):
+                complete_path = self.root_folder_abs_directory + relative_path
+            else:
+                complete_path = path.join(self.root_folder_abs_directory, path.join(self.current_path, relative_path))
             complete_path = path.normpath(path.realpath(complete_path))
+            server_log("Trying to access: %s" % complete_path)
             if not complete_path.startswith(self.root_folder_abs_directory):
                 return 'Cannot go outside root folder'
             else:
@@ -32,6 +37,8 @@ class FileManager:
                     return 'Not a directory'
                 else:
                     self.current_path = path.relpath(complete_path, self.root_folder_abs_directory)
+                    if self.current_path == '.':
+                        self.current_path = ''
                     return ''
 
     def write_file(self, file_data, file_path, file_name):
