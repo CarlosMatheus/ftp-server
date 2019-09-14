@@ -86,8 +86,10 @@ class FileManager:
 
     def list_items(self, directory=None):
         if directory is None:
-            directory = self.current_path
-        error, simplified_path = self.validate_path(directory)
+            simplified_path = self.current_path
+            error = ''
+        else:
+            error, simplified_path = self.validate_path(directory)
         if error:
             return error, []
         else:

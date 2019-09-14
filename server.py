@@ -133,7 +133,7 @@ class Server(Commander):
         if not args_list:
             error, lt = self.file_manager.list_items()
         else:
-            error, lt = self.file_manager.list_items(args_list)
+            error, lt = self.file_manager.list_items(args_list[0])
         if error:
             self.send_error(error)
         else:

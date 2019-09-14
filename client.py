@@ -104,7 +104,7 @@ class Client(Commander):
         if not args_list:
             message = "%s" % (COMMAND_LIST[1])
         else:
-            message = "%s %s" % (COMMAND_LIST[3], args_list[0])
+            message = "%s %s" % (COMMAND_LIST[1], args_list[0])
         answer = self.send_message(message).decode()
         if self.is_error(answer):
             self.throw_error(answer)
