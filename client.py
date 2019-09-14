@@ -20,7 +20,7 @@ class Client:
         self.switch_function = self.initiate_switch_function()
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.connect(self.address)
-
+        self.current_path = '/'
         self.client_loop()
 
         self.socket.close()
@@ -32,7 +32,12 @@ class Client:
     def initiate_switch_function(self):
         return {
             USER_AUTH: self.authenticate_user,
+            READING: self.read_command,
         }
+
+    def read_command(self):
+        user_input = input(self.address[0] + ':' + str(self.address[1]) + ' > ~' + self.current_path + '$')
+
 
     def authenticate_user(self):
         user_input = input('Please enter the password:')

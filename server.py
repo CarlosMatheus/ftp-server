@@ -38,10 +38,8 @@ class Server:
 
         self.execute_server_listener()
 
-    def execute_server_listener(self):
+    def server_loop(self):
         while True:
-            print('a')
-            self.connection, address = self.server.accept()
             print('b')
             received_byte_list = self.get_byte_list()
             print('c')
@@ -51,6 +49,13 @@ class Server:
             print('e')
             self.function_switcher[self.state]()
             print('f')
+
+    def execute_server_listener(self):
+        while True:
+            print('a')
+            self.connection, address = self.server.accept()
+            # todo: open thread for new server loop (possibly new object)
+            self.server_loop()
 
     def setup_function_switcher(self):
         return {
