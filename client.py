@@ -74,6 +74,13 @@ class Client(Commander):
         else:
             print('Error: %s' % message)
 
+    def is_error(self, message):
+        return message.startswith(INVALID)
+
+    def throw_error(self, message):
+        message = message.replace(INVALID, '')
+        self.print_invalid_message(message)
+
     def cd_command(self, args_list):
         if not args_list:
             path = ''
@@ -101,8 +108,14 @@ class Client(Commander):
         print(self.current_path)
 
     def mkdir_command(self, args_list):
-        print('todo: implement this')
-        pass
+        if not args_list:
+            print('Need to specify directory name')
+        else:
+            path = args_list[0]
+            message = "%s %s" % (COMMAND_LIST[3], path)
+            answer = self.send_message(message).decode()
+            if self.is_error(answer):
+                self.throw_error(answer)
 
     def rmdir_command(self, args_list):
         print('todo: implement this')

@@ -16,6 +16,7 @@ import socket
 from command_line import CommandLine
 from file_manager import FileManager
 from commander import Commander
+from os import path
 
 
 class Server(Commander):
@@ -110,6 +111,9 @@ class Server(Commander):
         else:
             return b''.join(received_byte_list).decode()
 
+    def send_error(self, error):
+        self.connection.sendall(('%s%s' % (INVALID, error)).encode())
+
     def cd_command(self, args_list):
         if not args_list:
             self.connection.sendall('%sNo path sent' % INVALID)
@@ -132,7 +136,20 @@ class Server(Commander):
             self.connection.sendall(self.file_manager.current_path.encode())
 
     def mkdir_command(self, args_list):
-        pass
+        if not args_list:
+            self.send_error('Need to specify the directory name')
+        else:
+            dir_path = args_list[0]
+            head, tail = path.split(dir_path)
+            error, simplified_path = self.file_manager.validate_path(head)
+            if error:
+                self.send_error(error)
+            else:
+                error = self.file_manager.create_directory(simplified_path, tail)
+                if error:
+                    self.send_error(error)
+                else:
+                    self.connection.sendall('ok'.encode())
 
     def rmdir_command(self, args_list):
         pass

@@ -53,7 +53,18 @@ class FileManager:
                     return '', current_path
 
     def validate_file(self, relative_path):
-        pass
+        directory, file = path.split(relative_path)
+        error, simplified_dir = self.validate_path(directory)
+        if error:
+            return False, error
+        else:
+            abs_file_path = path.join(self.root_folder_abs_directory, path.join(simplified_dir, file))
+            if not path.exists(abs_file_path):
+                return False, 'File not found'
+            elif not path.isfile(abs_file_path):
+                return False, 'Not a file'
+            else:
+                return True, ''
 
     def write_file(self, file_data, file_path, file_name):
         file_path = path.join(ROOT_DIR_NAME, file_path)
@@ -63,3 +74,11 @@ class FileManager:
             file_path = path.join(file_path, file_name)
             f = open(file_path, 'wb+')
             f.write(file_data)
+
+    def create_directory(self, simplified_path, dir_name):
+        complete_path = path.join(self.root_folder_abs_directory, simplified_path, dir_name)
+        if not path.exists(complete_path):
+            mkdir(complete_path)
+            return ''
+        else:
+            return 'Directory already exist'
