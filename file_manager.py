@@ -20,12 +20,19 @@ class FileManager:
         print(self.root_folder_abs_directory)
 
     def resolve_path(self, relative_path):
-        error, simplified_path = self.validate_path(relative_path)
+        error, simplified_path = self.validate_relative_path(relative_path)
         if not error:
             self.current_path = simplified_path
         return error
 
-    def validate_path(self, relative_path):
+    def validate_absolute_path(self, absolute_path):
+        aux_path = self.current_path
+        self.current_path = ''
+        error, simplified_path = self.validate_relative_path(absolute_path)
+        self.current_path = aux_path
+        return error, simplified_path
+
+    def validate_relative_path(self, relative_path):
         """
         Validates a path returning an error message and the simplified path
         :param relative_path:
@@ -56,7 +63,7 @@ class FileManager:
 
     def validate_file(self, relative_path):
         directory, file = path.split(relative_path)
-        error, simplified_dir = self.validate_path(directory)
+        error, simplified_dir = self.validate_relative_path(directory)
         if error:
             return False, error
         else:
@@ -77,31 +84,31 @@ class FileManager:
             f = open(file_path, 'wb+')
             f.write(file_data)
 
-    def create_directory(self, simplified_path, dir_name):
-        complete_path = path.join(self.root_folder_abs_directory, simplified_path, dir_name)
+    def create_directory(self, simplified_abs_path, dir_name):
+        complete_path = path.join(self.root_folder_abs_directory, simplified_abs_path, dir_name)
         if not path.exists(complete_path):
             mkdir(complete_path)
             return ''
         else:
             return 'Directory already exist'
 
+    def delete_directory(self, simplified_abs_path, dir_name):
+        complete_path = path.join(self.root_folder_abs_directory, simplified_abs_path, dir_name)
+        if path.exists(complete_path):
+            shutil.rmtree(complete_path)
+            return ''
+        else:
+            return 'Directory not found'
+
     def list_items(self, directory=None):
         if directory is None:
             simplified_path = self.current_path
             error = ''
         else:
-            error, simplified_path = self.validate_path(directory)
+            error, simplified_path = self.validate_relative_path(directory)
         if error:
             return error, []
         else:
             abs_path = path.join(self.root_folder_abs_directory, simplified_path)
             lt = listdir(abs_path)
             return '', lt
-
-    def delete_directory(self, simplified_path, dir_name):
-        complete_path = path.join(self.root_folder_abs_directory, simplified_path, dir_name)
-        if path.exists(complete_path):
-            shutil.rmtree(complete_path)
-            return ''
-        else:
-            return 'Directory not found'

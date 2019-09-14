@@ -1,4 +1,4 @@
-DEFAULT_ADDRESS = ('0.0.0.0', 8082)
+DEFAULT_ADDRESS = ('0.0.0.0', 8080)
 COMMAND_LIST = ['cd', 'ls', 'pwd', 'mkdir', 'rmdir', 'get', 'put', 'delete', 'close', 'open', 'quit', 'unknown']
 CONNECTION_BYTES = 16*1024
 
