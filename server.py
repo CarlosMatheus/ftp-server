@@ -13,16 +13,18 @@ from utils import \
 import socket
 from command_line import CommandLine
 from file_manager import FileManager
+from commander import Commander
 
 
-class Server:
+class Server(Commander):
 
     def __init__(self, address=DEFAULT_ADDRESS):
+        super().__init__()
         self.address = address
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.bind(self.address)
         self.server.listen(5)
-        self.command_line = self.setup_command_line()
+        # self.command_line = self.setup_command_line()
         # self.state = WRITING_FILE
         # self.state = TESTING
         self.state = USER_AUTH
@@ -72,15 +74,10 @@ class Server:
             self.connection.sendall(CONNECTION_DENIED.encode())
 
     def write_file(self):
-        # (file_name, file_data) = self.data_received.split(FILE_STRING)
         print('writing file: %s' % self.file_name)
         self.file_manager.write_file(self.data_received, self.current_folder, self.file_name)
         # todo: change state
         self.state = TESTING
-
-    def read_command(self):
-        command, arg_list = self.unpack(self.data_received)
-        self.command_line.execute_command(command, arg_list)
 
     def execute_test(self):
         message = self.data_received.replace(TEST_STRING, '')
@@ -96,10 +93,6 @@ class Server:
         else:
             self.state = USER_AUTH
 
-    def unpack(self, data_received):
-        lt = data_received.split(' ')
-        return lt[0], lt[1:]
-
     def get_byte_list(self):
         received_byte_list = list()
         data = self.connection.recv(CONNECTION_BYTES)
@@ -114,22 +107,6 @@ class Server:
             return b''.join(received_byte_list)
         else:
             return b''.join(received_byte_list).decode()
-
-    def setup_command_line(self):
-        method_list = [
-            self.cd_command,
-            self.ls_command,
-            self.pwd_command,
-            self.mkdir_command,
-            self.rmdir_command,
-            self.get_command,
-            self.put_command,
-            self.delete_command,
-            self.close_command,
-            self.open_command,
-            self.quit_command,
-        ]
-        return CommandLine(method_list)
 
     def cd_command(self, args_list):
         pass
@@ -162,4 +139,8 @@ class Server:
         pass
 
     def quit_command(self, args_list):
+        pass
+
+    def unknown_command(self, args_list):
+        print('todo: implent this')
         pass

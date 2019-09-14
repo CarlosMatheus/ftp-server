@@ -4,16 +4,17 @@ from utils import \
     TEST_STRING, \
     DEFAULT_ADDRESS, \
     CONNECTION_BYTES, \
-    FILE_STRING, \
     USER_AUTH, \
     CONNECTION_ACCEPTED, \
     CONNECTION_DENIED, \
     READING
 from hashlib import sha256 as sha
+from commander import Commander
 
 
-class Client:
+class Client(Commander):
     def __init__(self, address=DEFAULT_ADDRESS):
+        super().__init__()
         self.address = address
         self.socket = None
         self.state = USER_AUTH
@@ -32,12 +33,12 @@ class Client:
     def initiate_switch_function(self):
         return {
             USER_AUTH: self.authenticate_user,
-            READING: self.read_command,
+            READING: self.execute_read_command_loop,
         }
 
-    def read_command(self):
-        user_input = input(self.address[0] + ':' + str(self.address[1]) + ' > ~' + self.current_path + '$')
-
+    def execute_read_command_loop(self):
+        self.data_received = input(self.address[0] + ':' + str(self.address[1]) + ' > ~' + self.current_path + '$')
+        self.read_command()
 
     def authenticate_user(self):
         user_input = input('Please enter the password:')
@@ -65,3 +66,51 @@ class Client:
         _, file_name = os.path.split(path)
         with open(path, 'rb') as f:
             self.socket.sendfile(f, 0)
+
+    def cd_command(self, args_list):
+        print('todo: implement this')
+        pass
+
+    def ls_command(self, args_list):
+        print('todo: implement this')
+        pass
+
+    def pwd_command(self, args_list):
+        print('todo: implement this')
+        pass
+
+    def mkdir_command(self, args_list):
+        print('todo: implement this')
+        pass
+
+    def rmdir_command(self, args_list):
+        print('todo: implement this')
+        pass
+
+    def get_command(self, args_list):
+        print('todo: implement this')
+        pass
+
+    def put_command(self, args_list):
+        print('todo: implement this')
+        pass
+
+    def delete_command(self, args_list):
+        print('todo: implement this')
+        pass
+
+    def close_command(self, args_list):
+        print('todo: implement this')
+        pass
+
+    def open_command(self, args_list):
+        print('todo: implement this')
+        pass
+
+    def quit_command(self, args_list):
+        print('todo: implement this')
+        pass
+
+    def unknown_command(self, args_list):
+        print('todo: implent this')
+        pass

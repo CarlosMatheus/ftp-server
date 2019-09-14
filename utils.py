@@ -1,5 +1,5 @@
 DEFAULT_ADDRESS = ('0.0.0.0', 8081)
-COMMAND_LIST = ['cd', 'ls', 'pwd', 'mkdir', 'rmdir', 'get', 'put', 'delete', 'close', 'open', 'quit']
+COMMAND_LIST = ['cd', 'ls', 'pwd', 'mkdir', 'rmdir', 'get', 'put', 'delete', 'close', 'open', 'quit', 'unknown']
 CONNECTION_BYTES = 4096
 
 # server states:
@@ -16,3 +16,4 @@ CONNECTION_DENIED = 'connection denied'
 DEFAULT_SEND_BACK_MESSAGE = 'I am server \n'
 
 ROOT_DIR_NAME = 'root'
+UNKNOWN_COMMAND = 'unknown'

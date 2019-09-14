@@ -1,4 +1,4 @@
-from utils import COMMAND_LIST
+from utils import COMMAND_LIST, UNKNOWN_COMMAND
 
 
 class CommandLine:
@@ -14,4 +14,5 @@ class CommandLine:
         if command in self.method_hash:
             self.method_hash[command](arg_list)
         else:
-            raise Exception("Unknown command")
+            self.method_hash[UNKNOWN_COMMAND](arg_list)
+            # raise Exception("Unknown command")
