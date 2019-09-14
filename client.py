@@ -98,8 +98,7 @@ class Client(Commander):
         pass
 
     def pwd_command(self, args_list):
-        print('todo: implement this')
-        pass
+        print(self.current_path)
 
     def mkdir_command(self, args_list):
         print('todo: implement this')

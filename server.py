@@ -117,19 +117,19 @@ class Server(Commander):
             path = args_list[0]
             error = self.file_manager.resolve_path(path)
             if not error:
-                server_log('Access denied')
-                if self.file_manager.current_path == '':
-                    self.connection.sendall(' '.encode())
-                else:
-                    self.connection.sendall(self.file_manager.current_path.encode())
+                self.pwd_command([])
             else:
+                server_log('Access denied')
                 self.connection.sendall(('%s%s' % (INVALID, error)).encode())
 
     def ls_command(self, args_list):
         pass
 
     def pwd_command(self, args_list):
-        pass
+        if self.file_manager.current_path == '':
+            self.connection.sendall(' '.encode())
+        else:
+            self.connection.sendall(self.file_manager.current_path.encode())
 
     def mkdir_command(self, args_list):
         pass
