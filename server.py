@@ -162,7 +162,20 @@ class Server(Commander):
                     self.connection.sendall('ok'.encode())
 
     def rmdir_command(self, args_list):
-        pass
+        if not args_list:
+            self.send_error('Need to specify the directory name')
+        else:
+            dir_path = args_list[0]
+            head, tail = path.split(dir_path)
+            error, simplified_path = self.file_manager.validate_path(head)
+            if error:
+                self.send_error(error)
+            else:
+                error = self.file_manager.delete_directory(simplified_path, tail)
+                if error:
+                    self.send_error(error)
+                else:
+                    self.connection.sendall('ok'.encode())
 
     def get_command(self, args_list):
         pass

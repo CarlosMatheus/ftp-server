@@ -2,6 +2,7 @@ from utils import ROOT_DIR_NAME, server_log
 from os import path
 from os import mkdir
 from os import listdir
+import shutil
 
 
 class FileManager:
@@ -96,3 +97,11 @@ class FileManager:
             abs_path = path.join(self.root_folder_abs_directory, simplified_path)
             lt = listdir(abs_path)
             return '', lt
+
+    def delete_directory(self, simplified_path, dir_name):
+        complete_path = path.join(self.root_folder_abs_directory, simplified_path, dir_name)
+        if path.exists(complete_path):
+            shutil.rmtree(complete_path)
+            return ''
+        else:
+            return 'Directory not found'

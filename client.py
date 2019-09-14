@@ -127,8 +127,14 @@ class Client(Commander):
                 self.throw_error(answer)
 
     def rmdir_command(self, args_list):
-        print('todo: implement this')
-        pass
+        if not args_list:
+            print('Need to specify directory name')
+        else:
+            path = args_list[0]
+            message = "%s %s" % (COMMAND_LIST[4], path)
+            answer = self.send_message(message).decode()
+            if self.is_error(answer):
+                self.throw_error(answer)
 
     def get_command(self, args_list):
         print('todo: implement this')
