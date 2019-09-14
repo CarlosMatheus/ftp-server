@@ -48,7 +48,6 @@ class Client(Commander):
         answer = self.send_message(password_hash).decode()
         if answer == CONNECTION_ACCEPTED:
             self.state = READING
-            print('win')
         elif answer == CONNECTION_DENIED:
             print('Incorrect password')
         else:
@@ -87,10 +86,12 @@ class Client(Commander):
         message = "%s %s" % (COMMAND_LIST[0], path)
         answer = self.send_message(message).decode()
         if answer.startswith(INVALID):
-            answer.replace(INVALID, '')
-            self.print_invalid_message(message)
+            answer = answer.replace(INVALID, '')
+            self.print_invalid_message(answer)
         else:
-            self.current_path = message
+            if answer == ' ':
+                answer = '/'
+            self.current_path = answer
 
     def ls_command(self, args_list):
         print('todo: implement this')

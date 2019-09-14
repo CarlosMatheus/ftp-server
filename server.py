@@ -9,7 +9,8 @@ from utils import \
     WRITING_FILE, \
     USER_AUTH, \
     CONNECTION_ACCEPTED, \
-    CONNECTION_DENIED
+    CONNECTION_DENIED, \
+    INVALID
 import socket
 from command_line import CommandLine
 from file_manager import FileManager
@@ -33,29 +34,29 @@ class Server(Commander):
         self.file_manager = FileManager()
 
         # todo: change this part:
-        self.current_folder = ''
-        self.file_name = 'ITA_logo.png'
+        # self.current_folder = ''
+        # self.file_name = 'ITA_logo.png'
 
         self.password_hash = 'b7e94be513e96e8c45cd23d162275e5a12ebde9100a425c4ebcdd7fa4dcd897c'
 
         self.execute_server_listener()
 
     def server_loop(self):
+        print('Waiting for user authentication')
+        self.state = USER_AUTH
         while True:
-            print('b')
+            print('Awaiting message')
             received_byte_list = self.get_byte_list()
-            print('c')
+            print('Decoding received message')
             self.data_received = self.decode(received_byte_list)
-            print('d')
-            self.update_state()
-            print('e')
+            print('Executing message')
             self.function_switcher[self.state]()
-            print('f')
+            print('Concluded')
 
     def execute_server_listener(self):
         while True:
-            print('a')
             self.connection, address = self.server.accept()
+            print('Connection established')
             # todo: open thread for new server loop (possibly new object)
             self.server_loop()
 
@@ -70,6 +71,8 @@ class Server(Commander):
     def authenticate_user(self):
         if self.data_received == self.password_hash:
             self.connection.sendall(CONNECTION_ACCEPTED.encode())
+            print('User authenticated')
+            self.state = READING
         else:
             self.connection.sendall(CONNECTION_DENIED.encode())
 
@@ -97,9 +100,7 @@ class Server(Commander):
         received_byte_list = list()
         data = self.connection.recv(CONNECTION_BYTES)
         received_byte_list.append(data)
-        print(data.decode())
-        if self.state == READING:
-            self.connection.sendall(DEFAULT_SEND_BACK_MESSAGE.encode())
+        print("Received message: %s" % data.decode())
         return received_byte_list
 
     def decode(self, received_byte_list):
@@ -109,7 +110,15 @@ class Server(Commander):
             return b''.join(received_byte_list).decode()
 
     def cd_command(self, args_list):
-        pass
+        if not args_list:
+            self.connection.sendall('%sNo path sent' % INVALID)
+        else:
+            path = args_list[0]
+            error = self.file_manager.resolve_path(path)
+            if not error:
+                self.connection.sendall(self.file_manager.current_path.encode())
+            else:
+                self.connection.sendall(('%s%s' % (INVALID, error)).encode())
 
     def ls_command(self, args_list):
         pass
