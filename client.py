@@ -7,7 +7,9 @@ from utils import \
     USER_AUTH, \
     CONNECTION_ACCEPTED, \
     CONNECTION_DENIED, \
-    READING
+    READING, \
+    COMMAND_LIST, \
+    INVALID
 from hashlib import sha256 as sha
 from commander import Commander
 
@@ -67,9 +69,28 @@ class Client(Commander):
         with open(path, 'rb') as f:
             self.socket.sendfile(f, 0)
 
+    def print_invalid_message(self, message=''):
+        if not message:
+            print('Error')
+        else:
+            print('Error: %s' % message)
+
     def cd_command(self, args_list):
-        print('todo: implement this')
-        pass
+        if not args_list:
+            path = ''
+        else:
+            if args_list[0] == '/' or args_list[0] == '~' or args_list[0] == '~/':
+                path = ''
+            else:
+                path = args_list[0]
+
+        message = "%s %s" % (COMMAND_LIST[0], path)
+        answer = self.send_message(message).decode()
+        if answer.startswith(INVALID):
+            answer.replace(INVALID, '')
+            self.print_invalid_message(message)
+        else:
+            self.current_path = message
 
     def ls_command(self, args_list):
         print('todo: implement this')

@@ -11,6 +11,7 @@ USER_AUTH = 'user_auth'
 # Messages
 TEST_STRING = '-----/test/-----'
 FILE_STRING = '-----/file/-----'
+INVALID = '14e4894c30ec4ece91df949863a797'
 CONNECTION_ACCEPTED = 'connection accepted'
 CONNECTION_DENIED = 'connection denied'
 DEFAULT_SEND_BACK_MESSAGE = 'I am server \n'
