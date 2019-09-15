@@ -20,6 +20,8 @@ ROOT_DIR_NAME = 'root'
 UNKNOWN_COMMAND = 'unknown'
 
 ERROR_NOT_A_DIRECTORY = 'Not a directory'
+ERROR_FILE_PATH_DOES_NOT_EXIST = 'File path does not exist'
+ERROR_FILE_ALREADY_EXIST = 'File already exist'
 
 
 def server_log(message):

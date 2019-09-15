@@ -10,7 +10,8 @@ from utils import \
     READING, \
     COMMAND_LIST, \
     INVALID, \
-    ERROR_NOT_A_DIRECTORY
+    ERROR_NOT_A_DIRECTORY, \
+    ERROR_FILE_ALREADY_EXIST
 from hashlib import sha256 as sha
 from commander import Commander
 from file_manager import FileManager
@@ -154,7 +155,7 @@ class Client(Commander):
         """
 
         received_byte_list = list()
-        self.socket.settimeout(1)
+        self.socket.settimeout(0.2)
 
         while True:
             try:
@@ -175,8 +176,16 @@ class Client(Commander):
         :return:
         """
 
-        # get file from there
+        file_manager = FileManager(no_root_folder=True)
+
+        if not args_list:
+            print('Need to specify the file')
+            return
+
         path = args_list[0]
+
+        server_dir, file_name = os.path.split(path)
+
         message = "%s %s" % (COMMAND_LIST[5], path)
         answer = self.send_message(message).decode()
         if self.is_error(answer):
@@ -184,19 +193,47 @@ class Client(Commander):
             return
 
         file_data = self.get_file()
-        print(file_data[:100])
-        f = open('asdf.png', 'wb+')
-        f.write(file_data)
 
-        # get simplified path here
+        if len(args_list) > 1:
+            # get simplified path here
 
-        # Verify if file exists here:
-            # if yes ask if want to replace
-                # if yes delete local and continue
-                # if no stop
-            # if no continue
+            simplified_abs_path = ''
+        else:
+            # simplified_abs_path = ''
+            # error, simplified_abs_path = self.file_manager.validate_relative_path('')
+            error, simplified_abs_path = file_manager.validate_relative_path('')
+            if error: return self.throw_error(error)
 
-        # write file
+        # aux = self.file_manager.root_folder_abs_directory
+        # self.file_manager.root_folder_abs_directory = self.file_manager.current_path
+        # error = self.file_manager.write_file(simplified_abs_path, file_name, file_data=file_data)
+        error = file_manager.write_file(simplified_abs_path, file_name, file_data=file_data)
+        # self.file_manager.root_folder_abs_directory = aux
+
+        if error:
+            if error == ERROR_FILE_ALREADY_EXIST:
+                self.throw_error('There already are a file on that directory with that name.')
+
+                ans = ''
+
+                while ans != 'no' and ans != 'yes':
+                    ans = input('Do you want to replace the file? (Yes/No) ').lower()
+
+                if ans == 'no':
+                    return
+                else:
+                    # error = self.file_manager.delete_file(simplified_abs_path, file_name)
+                    error = file_manager.delete_file(simplified_abs_path, file_name)
+                    if error:
+                        return self.throw_error(error)
+                    error = file_manager.write_file(simplified_abs_path, file_name, file_data=file_data)
+                    # error = self.file_manager.write_file(simplified_abs_path, file_name, file_data=file_data)
+                    if error:
+                        return self.throw_error(error)
+            else:
+                return self.throw_error(error)
+
+    # def write_with_
 
     def put_command(self, args_list):
         """
@@ -254,7 +291,7 @@ class Client(Commander):
                 self.throw_error('There already are a file on that directory with that name.')
                 ans = ''
                 while ans != 'no' and ans != 'yes':
-                    ans = input('Do you want to replace the file? (Yes/No)').lower()
+                    ans = input('Do you want to replace the file? (Yes/No) ').lower()
                 if ans == 'no':
                     return
                 else:
@@ -263,7 +300,7 @@ class Client(Commander):
             self.throw_error('There already are a folder on that directory with that name.')
             ans = ''
             while ans != 'no' and ans != 'yes':
-                ans = input('Do you want to replace the folder with the file? (Yes/No)').lower()
+                ans = input('Do you want to replace the folder with the file? (Yes/No) ').lower()
             if ans == 'no':
                 return
             else:

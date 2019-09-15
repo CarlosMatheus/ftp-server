@@ -1,12 +1,18 @@
-from utils import ROOT_DIR_NAME, server_log, ERROR_NOT_A_DIRECTORY
+from utils import \
+    ROOT_DIR_NAME, \
+    server_log, \
+    ERROR_NOT_A_DIRECTORY, \
+    ERROR_FILE_PATH_DOES_NOT_EXIST, \
+    ERROR_FILE_ALREADY_EXIST
 from os import path, mkdir, listdir, remove
 import shutil
 
 
 class FileManager:
 
-    def __init__(self, abs_root_folder=False):
+    def __init__(self, abs_root_folder=False, no_root_folder=False):
         self.abs_root_folder = abs_root_folder
+        self.no_root_folder = no_root_folder
 
         self.root_folder_abs_directory = ''
         self.current_path = ''
@@ -23,7 +29,10 @@ class FileManager:
     def initiate_root_folder(self):
         if not path.exists(ROOT_DIR_NAME):
             mkdir(ROOT_DIR_NAME)
-        self.root_folder_abs_directory = path.join(self.get_current_folder(), ROOT_DIR_NAME)
+        if not self.no_root_folder:
+            self.root_folder_abs_directory = path.join(self.get_current_folder(), ROOT_DIR_NAME)
+        else:
+            self.root_folder_abs_directory = self.get_current_folder()
 
     def resolve_path(self, relative_path):
         error, simplified_path = self.validate_relative_path(relative_path)
@@ -145,10 +154,10 @@ class FileManager:
         if not path.exists(complete_path):
             if file_data is not None:
                 if not path.exists(simplified_abs_path):
-                    return 'File path does not exist'
+                    return ERROR_FILE_PATH_DOES_NOT_EXIST
                 else:
                     f = open(complete_path, 'wb+')
                     f.write(file_data)
             return ''
         else:
-            return 'File already exist'
+            return ERROR_FILE_ALREADY_EXIST

@@ -81,16 +81,12 @@ class Server(Commander):
             self.connection.sendall(CONNECTION_DENIED.encode())
 
     def write_file(self):
-        print('writing file: %s' % self.item_name)
-        # self.file_manager.write_file(self.data_received, self.current_folder, self.file_name)
-        print('bbbbbbbbbbbbbbbbbbb')
+        server_log('writing file: %s' % self.item_name)
         error = self.file_manager.write_file(self.simplified_abs_path, self.item_name, self.data_received)
         if error:
             server_log('File write failed: ' + error)
-            # self.send_error(error)
         else:
             server_log('File write successfully')
-            # self.connection.sendall('ok'.encode())
         self.state = READING
 
     def execute_test(self):
@@ -112,10 +108,7 @@ class Server(Commander):
         if self.state != WRITING_FILE:
             data = self.connection.recv(CONNECTION_BYTES)
             received_byte_list.append(data)
-            try:
-                print("Received message: %s" % data.decode())
-            except:
-                print(1)
+            print("Received message: %s" % data.decode())
         else:
             self.connection.settimeout(0.2)
             while True:
