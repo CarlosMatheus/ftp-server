@@ -168,9 +168,6 @@ class Client(Commander):
             self.throw_error(error)
             return
 
-        # self.send_file_path = simplified_path +
-        # _, file_name = path.split(simplified_path)
-
         if len(args_list) == 2:
             message = "%s %s" % (COMMAND_LIST[1], args_list[1])
             answer = self.send_message(message).decode()
@@ -179,8 +176,8 @@ class Client(Commander):
                 self.throw_error(answer)
                 return
 
-            message = "%s %s" % (COMMAND_LIST[1], args_list[1] + file_name)
-            server_side_file = args_list[1] + file_name
+            message = "%s %s" % (COMMAND_LIST[1], os.path.join(args_list[1], file_name))
+            server_side_file = os.path.join(args_list[1], file_name)
         else:
             message = "%s %s" % (COMMAND_LIST[1], file_name)
             server_side_file = file_name
@@ -214,7 +211,7 @@ class Client(Commander):
         if len(args_list) == 1:
             path = file_name
         else:
-            path = args_list[1] + file_name
+            path = os.path.join(args_list[1], file_name)
 
         message = "%s %s" % (COMMAND_LIST[6], path)
         answer = self.send_message(message).decode()
@@ -222,7 +219,7 @@ class Client(Commander):
         if self.is_error(answer):
             self.throw_error(answer)
         else:
-            self.send_file(simplified_path + file_name)
+            self.send_file(os.path.join(simplified_path, file_name))
 
     def delete_command(self, args_list):
         print('todo: implement this')

@@ -126,14 +126,14 @@ class FileManager:
         :return:
         """
         complete_path = path.join(self.root_folder_abs_directory, simplified_abs_path, file_name)
+        simplified_abs_path = path.join(self.root_folder_abs_directory, simplified_abs_path)
         if not path.exists(complete_path):
             if file_data is not None:
                 print('cccccccccc')
-                if simplified_abs_path:
-                    if not path.exists(simplified_abs_path):
-                        print('???????')
-                        print(simplified_abs_path)
-                        return 'File path does not exist'
+                if not path.exists(simplified_abs_path):
+                    print('???????')
+                    print(simplified_abs_path)
+                    return 'File path does not exist'
                 else:
                     print('ddddddddddd')
                     f = open(complete_path, 'wb+')

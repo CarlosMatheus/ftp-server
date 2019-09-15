@@ -85,6 +85,12 @@ class Server(Commander):
         # self.file_manager.write_file(self.data_received, self.current_folder, self.file_name)
         print('bbbbbbbbbbbbbbbbbbb')
         error = self.file_manager.write_file(self.simplified_abs_path, self.item_name, self.data_received)
+        if error:
+            server_log('File write failed: ' + error)
+            # self.send_error(error)
+        else:
+            server_log('File write successfully')
+            # self.connection.sendall('ok'.encode())
         self.state = READING
 
     def execute_test(self):
