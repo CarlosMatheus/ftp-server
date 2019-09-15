@@ -68,7 +68,12 @@ class Client(Commander):
         self.send_message(message)
 
     def send_file(self, path):
+        """
+        Will send the entire file using the socket function sendfile
+        :param path: the client path to the file (dir+file_name)
+        """
         _, file_name = os.path.split(path)
+        print('seeeeeeeeeeeeeeeeeeeeeeeeeeeeeending')
         with open(path, 'rb') as f:
             self.socket.sendfile(f, 0)
 
@@ -207,17 +212,17 @@ class Client(Commander):
                 self.rmdir_command([server_side_file])
 
         if len(args_list) == 1:
-            message = "%s %s" % (COMMAND_LIST[6], file_name)
-            answer = self.send_message(message).decode()
-            if self.is_error(answer):
-                print(1)
-                self.throw_error(answer)
+            path = file_name
         else:
             path = args_list[1] + file_name
-            message = "%s %s" % (COMMAND_LIST[6], path)
-            answer = self.send_message(message).decode()
-            if self.is_error(answer):
-                self.throw_error(answer)
+
+        message = "%s %s" % (COMMAND_LIST[6], path)
+        answer = self.send_message(message).decode()
+
+        if self.is_error(answer):
+            self.throw_error(answer)
+        else:
+            self.send_file(simplified_path + file_name)
 
     def delete_command(self, args_list):
         print('todo: implement this')

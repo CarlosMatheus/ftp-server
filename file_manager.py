@@ -116,12 +116,26 @@ class FileManager:
             return '', lt
 
     def write_file(self, simplified_abs_path, file_name, file_data=None):
+        """
+        Will return error in case the directory does not exist, or the file already exists
+        Will write the file on the path (directory + file_name) if is passed the data
+        in case no data is passed the function will only do some errors checks but nothing will be write
+        :param simplified_abs_path: directory where file will be write
+        :param file_name: the name of the file that will be created
+        :param file_data: binary of the file
+        :return:
+        """
         complete_path = path.join(self.root_folder_abs_directory, simplified_abs_path, file_name)
         if not path.exists(complete_path):
             if file_data is not None:
-                if not path.exists(simplified_abs_path):
-                    return 'File path does not exist'
+                print('cccccccccc')
+                if simplified_abs_path:
+                    if not path.exists(simplified_abs_path):
+                        print('???????')
+                        print(simplified_abs_path)
+                        return 'File path does not exist'
                 else:
+                    print('ddddddddddd')
                     f = open(complete_path, 'wb+')
                     f.write(file_data)
             return ''

@@ -37,7 +37,7 @@ class Server(Commander):
         # todo: change this part:
         # self.current_folder = ''
         # self.file_name = 'ITA_logo.png'
-        self.simplified_abs_path = simplified_item_path
+        self.simplified_abs_path = ''
         self.item_name = ''
         self.state = USER_AUTH
 
@@ -83,7 +83,8 @@ class Server(Commander):
     def write_file(self):
         print('writing file: %s' % self.item_name)
         # self.file_manager.write_file(self.data_received, self.current_folder, self.file_name)
-        self.file_manager.write_file(self.simplified_abs_path, self.item_name, self.data_received)
+        print('bbbbbbbbbbbbbbbbbbb')
+        error = self.file_manager.write_file(self.simplified_abs_path, self.item_name, self.data_received)
         self.state = READING
 
     def execute_test(self):
@@ -102,9 +103,27 @@ class Server(Commander):
 
     def get_byte_list(self):
         received_byte_list = list()
-        data = self.connection.recv(CONNECTION_BYTES)
-        received_byte_list.append(data)
-        print("Received message: %s" % data.decode())
+        if self.state != WRITING_FILE:
+            data = self.connection.recv(CONNECTION_BYTES)
+            received_byte_list.append(data)
+            try:
+                print("Received message: %s" % data.decode())
+            except:
+                print(1)
+        else:
+            # self.connection.setblocking(False)
+            self.connection.settimeout(0.2)
+            while True:
+                try:
+                    data = self.connection.recv(CONNECTION_BYTES)
+                    if not data:
+                        break
+                    received_byte_list.append(data)
+                except:
+                    break
+            # self.connection.setblocking(True)
+            self.connection.settimeout(None)
+                # self.connection.send(b'I am server \n')
         return received_byte_list
 
     def decode(self, received_byte_list):
@@ -196,6 +215,7 @@ class Server(Commander):
         elif len(args_list) == 1:
             error = self.interact(args_list, self.file_manager.write_file)
             if not error:
+                print('aaaaaaaaaaaaaaaaaaaaaaaaaaa')
                 self.state = WRITING_FILE
 
     def delete_command(self, args_list):
