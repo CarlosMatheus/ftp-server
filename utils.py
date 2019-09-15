@@ -19,6 +19,8 @@ DEFAULT_SEND_BACK_MESSAGE = 'I am server \n'
 ROOT_DIR_NAME = 'root'
 UNKNOWN_COMMAND = 'unknown'
 
+ERROR_NOT_A_DIRECTORY = 'Not a directory'
+
 
 def server_log(message):
     print(message)

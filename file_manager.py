@@ -1,4 +1,4 @@
-from utils import ROOT_DIR_NAME, server_log
+from utils import ROOT_DIR_NAME, server_log, ERROR_NOT_A_DIRECTORY
 from os import path
 from os import mkdir
 from os import listdir
@@ -7,17 +7,26 @@ import shutil
 
 class FileManager:
 
-    def __init__(self):
+    def __init__(self, abs_root_folder=False):
+        self.abs_root_folder = abs_root_folder
+
         self.root_folder_abs_directory = ''
         self.current_path = ''
 
-        self.initiate_root_folder()
+        if not abs_root_folder:
+            self.initiate_root_folder()
+        else:
+            self.root_folder_abs_directory = '/'
+            self.current_path = self.get_current_folder()
+
+    def get_current_folder(self):
+        return path.dirname(path.abspath(__file__))
 
     def initiate_root_folder(self):
         if not path.exists(ROOT_DIR_NAME):
             mkdir(ROOT_DIR_NAME)
-        self.root_folder_abs_directory = path.join(path.dirname(path.abspath(__file__)), ROOT_DIR_NAME)
-        print(self.root_folder_abs_directory)
+        self.root_folder_abs_directory = path.join(self.get_current_folder(), ROOT_DIR_NAME)
+        # print(self.root_folder_abs_directory)
 
     def resolve_path(self, relative_path):
         error, simplified_path = self.validate_relative_path(relative_path)
@@ -44,6 +53,8 @@ class FileManager:
         else:
             if relative_path.startswith('/'):
                 complete_path = self.root_folder_abs_directory + relative_path
+            elif relative_path.startswith('~') and self.abs_root_folder:
+                complete_path = path.expanduser('~') + relative_path[1:]
             else:
                 complete_path = path.join(self.root_folder_abs_directory, path.join(self.current_path, relative_path))
             complete_path = path.normpath(path.realpath(complete_path))
@@ -54,7 +65,7 @@ class FileManager:
                 if not path.exists(complete_path):
                     return 'Directory not found', ''
                 elif not path.isdir(complete_path):
-                    return 'Not a directory', ''
+                    return ERROR_NOT_A_DIRECTORY, ''
                 else:
                     current_path = path.relpath(complete_path, self.root_folder_abs_directory)
                     if current_path == '.':
@@ -74,15 +85,6 @@ class FileManager:
                 return False, 'Not a file'
             else:
                 return True, ''
-
-    def write_file(self, file_data, file_path, file_name):
-        file_path = path.join(ROOT_DIR_NAME, file_path)
-        if not path.exists(file_path):
-            raise Exception("File's path doesn't exist: %s" % file_path)
-        else:
-            file_path = path.join(file_path, file_name)
-            f = open(file_path, 'wb+')
-            f.write(file_data)
 
     def create_directory(self, simplified_abs_path, dir_name):
         complete_path = path.join(self.root_folder_abs_directory, simplified_abs_path, dir_name)
@@ -112,3 +114,16 @@ class FileManager:
             abs_path = path.join(self.root_folder_abs_directory, simplified_path)
             lt = listdir(abs_path)
             return '', lt
+
+    def write_file(self, simplified_abs_path, file_name, file_data=None):
+        complete_path = path.join(self.root_folder_abs_directory, simplified_abs_path, file_name)
+        if not path.exists(complete_path):
+            if file_data is not None:
+                if not path.exists(simplified_abs_path):
+                    return 'File path does not exist'
+                else:
+                    f = open(complete_path, 'wb+')
+                    f.write(file_data)
+            return ''
+        else:
+            return 'File already exist'

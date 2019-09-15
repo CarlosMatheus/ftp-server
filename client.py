@@ -9,9 +9,11 @@ from utils import \
     CONNECTION_DENIED, \
     READING, \
     COMMAND_LIST, \
-    INVALID
+    INVALID, \
+    ERROR_NOT_A_DIRECTORY
 from hashlib import sha256 as sha
 from commander import Commander
+from file_manager import FileManager
 
 
 class Client(Commander):
@@ -24,6 +26,8 @@ class Client(Commander):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.connect(self.address)
         self.current_path = '/'
+        self.send_file_path = ''
+        self.file_manager = FileManager(abs_root_folder=True)
         self.client_loop()
 
         self.socket.close()
@@ -141,8 +145,79 @@ class Client(Commander):
         pass
 
     def put_command(self, args_list):
-        print('todo: implement this')
-        pass
+        """
+        It is possible to use with 1 or 2 arguments
+        with 1 argument -> the single argument passed will be the file name(location) on the client side
+        with 2 arguments -> the first first will be the same as with 1 and the second will be the location (the directory) to
+                            put on the server side
+        :param args_list: list of arguments
+        """
+        if not args_list:
+            self.throw_error('Need to specify file name')
+            return
+
+        path_to_local_file, file_name = os.path.split(os.path.join(args_list[0]))
+        error, simplified_path = self.file_manager.validate_relative_path(path_to_local_file)
+
+        if error:
+            self.throw_error(error)
+            return
+
+        # self.send_file_path = simplified_path +
+        # _, file_name = path.split(simplified_path)
+
+        if len(args_list) == 2:
+            message = "%s %s" % (COMMAND_LIST[1], args_list[1])
+            answer = self.send_message(message).decode()
+            # print(answer)
+            if self.is_error(answer):
+                self.throw_error(answer)
+                return
+
+            message = "%s %s" % (COMMAND_LIST[1], args_list[1] + file_name)
+            server_side_file = args_list[1] + file_name
+        else:
+            message = "%s %s" % (COMMAND_LIST[1], file_name)
+            server_side_file = file_name
+
+        answer = self.send_message(message).decode()
+        if self.is_error(answer):
+            answer = answer.replace(INVALID, '')
+            # print(answer)
+            if answer == ERROR_NOT_A_DIRECTORY:
+                # problem
+                self.throw_error('There already are a file on that directory with that name.')
+                ans = ''
+                while ans != 'no' and ans != 'yes':
+                    ans = input('Do you want to replace the file? (Yes/No)').lower()
+                if ans == 'no':
+                    return
+                else:
+                    # Delete the file
+                    self.delete_command([server_side_file])
+        else:
+            self.throw_error('There already are a folder on that directory with that name.')
+            ans = ''
+            while ans != 'no' and ans != 'yes':
+                ans = input('Do you want to replace the folder with the file? (Yes/No)').lower()
+            if ans == 'no':
+                return
+            else:
+                # Delete the folder
+                self.rmdir_command([server_side_file])
+
+        if len(args_list) == 1:
+            message = "%s %s" % (COMMAND_LIST[6], file_name)
+            answer = self.send_message(message).decode()
+            if self.is_error(answer):
+                print(1)
+                self.throw_error(answer)
+        else:
+            path = args_list[1] + file_name
+            message = "%s %s" % (COMMAND_LIST[6], path)
+            answer = self.send_message(message).decode()
+            if self.is_error(answer):
+                self.throw_error(answer)
 
     def delete_command(self, args_list):
         print('todo: implement this')

@@ -30,7 +30,6 @@ class Server(Commander):
         # self.command_line = self.setup_command_line()
         # self.state = WRITING_FILE
         # self.state = TESTING
-        self.state = USER_AUTH
         self.data_received = ''
         self.function_switcher = self.setup_function_switcher()
         self.file_manager = FileManager()
@@ -38,6 +37,9 @@ class Server(Commander):
         # todo: change this part:
         # self.current_folder = ''
         # self.file_name = 'ITA_logo.png'
+        self.simplified_abs_path = simplified_item_path
+        self.item_name = ''
+        self.state = USER_AUTH
 
         self.password_hash = 'b7e94be513e96e8c45cd23d162275e5a12ebde9100a425c4ebcdd7fa4dcd897c'
 
@@ -79,10 +81,10 @@ class Server(Commander):
             self.connection.sendall(CONNECTION_DENIED.encode())
 
     def write_file(self):
-        print('writing file: %s' % self.file_name)
-        self.file_manager.write_file(self.data_received, self.current_folder, self.file_name)
-        # todo: change state
-        self.state = TESTING
+        print('writing file: %s' % self.item_name)
+        # self.file_manager.write_file(self.data_received, self.current_folder, self.file_name)
+        self.file_manager.write_file(self.simplified_abs_path, self.item_name, self.data_received)
+        self.state = READING
 
     def execute_test(self):
         message = self.data_received.replace(TEST_STRING, '')
@@ -113,6 +115,7 @@ class Server(Commander):
 
     def send_error(self, error):
         self.connection.sendall(('%s%s' % (INVALID, error)).encode())
+        return '%s%s' % (INVALID, error)
 
     def send_response(self, response):
         self.connection.sendall(response.encode())
@@ -145,37 +148,55 @@ class Server(Commander):
         else:
             self.connection.sendall(self.file_manager.current_path.encode())
 
-    def modify_folder(self, args_list, modifier_function):
+    def interact(self, args_list, function):
+        """
+        Generic function to do something to a item (the item can be ether a directory or file)
+        :param args_list: It is a list
+                          1 Cannot be an empty
+                          2 can contain ether a relative path or absolute path to the item
+        :param function: Function that will perform an action on the item (being this item an directory or a file)
+        :return: an error message in case of any error during the function or an empty string if no error
+        """
         if not args_list:
-            self.send_error('Need to specify the directory name')
+            error = self.send_error('Need to specify the directory name')
         else:
-            dir_path = args_list[0]
+            item_path = args_list[0]
 
-            if not dir_path.startswith('/'):
-                dir_path = path.join(self.file_manager.current_path, dir_path)
+            if not item_path.startswith('/'):
+                item_path = path.join(self.file_manager.current_path, item_path)
 
-            abs_path, dir_name = path.split(dir_path)
-            error, simplified_abs_path = self.file_manager.validate_absolute_path(abs_path)
+            abs_path, item_name = path.split(item_path)
+            error, simplified_item_path = self.file_manager.validate_absolute_path(abs_path)
+
+            self.simplified_abs_path = simplified_item_path
+            self.item_name = item_name
+
             if error:
-                self.send_error(error)
+                error = self.send_error(error)
             else:
-                error = modifier_function(simplified_abs_path, dir_name)
+                error = function(simplified_item_path, item_name)
                 if error:
-                    self.send_error(error)
+                    error = self.send_error(error)
                 else:
                     self.connection.sendall('ok'.encode())
+        return error
 
     def mkdir_command(self, args_list):
-        self.modify_folder(args_list, self.file_manager.create_directory)
+        self.interact(args_list, self.file_manager.create_directory)
 
     def rmdir_command(self, args_list):
-        self.modify_folder(args_list, self.file_manager.delete_directory)
+        self.interact(args_list, self.file_manager.delete_directory)
 
     def get_command(self, args_list):
         pass
 
     def put_command(self, args_list):
-        pass
+        if not args_list:
+            self.send_error('Need to specify the file')
+        elif len(args_list) == 1:
+            error = self.interact(args_list, self.file_manager.write_file)
+            if not error:
+                self.state = WRITING_FILE
 
     def delete_command(self, args_list):
         pass
