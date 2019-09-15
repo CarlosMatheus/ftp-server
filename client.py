@@ -195,19 +195,20 @@ class Client(Commander):
         file_data = self.get_file()
 
         if len(args_list) > 1:
-            # get simplified path here
-
-            simplified_abs_path = ''
+            path = args_list[1]
+            # error, simplified_abs_path = file_manager.validate_relative_path(path)
+            error, simplified_abs_path = self.file_manager.validate_relative_path(path)
         else:
-            # simplified_abs_path = ''
-            # error, simplified_abs_path = self.file_manager.validate_relative_path('')
-            error, simplified_abs_path = file_manager.validate_relative_path('')
-            if error: return self.throw_error(error)
+            # error, simplified_abs_path = file_manager.validate_relative_path('')
+            error, simplified_abs_path = self.file_manager.validate_relative_path('')
+
+        if error:
+            return self.throw_error(error)
 
         # aux = self.file_manager.root_folder_abs_directory
         # self.file_manager.root_folder_abs_directory = self.file_manager.current_path
-        # error = self.file_manager.write_file(simplified_abs_path, file_name, file_data=file_data)
-        error = file_manager.write_file(simplified_abs_path, file_name, file_data=file_data)
+        error = self.file_manager.write_file(simplified_abs_path, file_name, file_data=file_data)
+        # error = file_manager.write_file(simplified_abs_path, file_name, file_data=file_data)
         # self.file_manager.root_folder_abs_directory = aux
 
         if error:
@@ -222,12 +223,12 @@ class Client(Commander):
                 if ans == 'no':
                     return
                 else:
-                    # error = self.file_manager.delete_file(simplified_abs_path, file_name)
-                    error = file_manager.delete_file(simplified_abs_path, file_name)
+                    error = self.file_manager.delete_file(simplified_abs_path, file_name)
+                    # error = file_manager.delete_file(simplified_abs_path, file_name)
                     if error:
                         return self.throw_error(error)
-                    error = file_manager.write_file(simplified_abs_path, file_name, file_data=file_data)
-                    # error = self.file_manager.write_file(simplified_abs_path, file_name, file_data=file_data)
+                    # error = file_manager.write_file(simplified_abs_path, file_name, file_data=file_data)
+                    error = self.file_manager.write_file(simplified_abs_path, file_name, file_data=file_data)
                     if error:
                         return self.throw_error(error)
             else:

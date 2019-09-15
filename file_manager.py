@@ -149,8 +149,14 @@ class FileManager:
         :param file_data: binary of the file
         :return:
         """
-        complete_path = path.join(self.root_folder_abs_directory, simplified_abs_path, file_name)
-        simplified_abs_path = path.join(self.root_folder_abs_directory, simplified_abs_path)
+
+        if not self.abs_root_folder:
+            complete_path = path.join(self.root_folder_abs_directory, simplified_abs_path, file_name)
+            simplified_abs_path = path.join(self.root_folder_abs_directory, simplified_abs_path)
+        else:
+            complete_path = path.join(self.current_path, simplified_abs_path, file_name)
+            simplified_abs_path = path.join(self.current_path, simplified_abs_path)
+
         if not path.exists(complete_path):
             if file_data is not None:
                 if not path.exists(simplified_abs_path):
