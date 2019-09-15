@@ -212,6 +212,9 @@ class Server(Commander):
     def rmdir_command(self, args_list):
         self.interact(args_list, self.file_manager.delete_directory)
 
+    def delete_command(self, args_list):
+        self.interact(args_list, self.file_manager.delete_file)
+
     def get_command(self, args_list):
         pass
 
@@ -223,9 +226,6 @@ class Server(Commander):
             if not error:
                 print('aaaaaaaaaaaaaaaaaaaaaaaaaaa')
                 self.state = WRITING_FILE
-
-    def delete_command(self, args_list):
-        pass
 
     def close_command(self, args_list):
         pass

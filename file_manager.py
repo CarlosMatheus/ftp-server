@@ -1,7 +1,5 @@
 from utils import ROOT_DIR_NAME, server_log, ERROR_NOT_A_DIRECTORY
-from os import path
-from os import mkdir
-from os import listdir
+from os import path, mkdir, listdir, remove
 import shutil
 
 
@@ -16,7 +14,7 @@ class FileManager:
         if not abs_root_folder:
             self.initiate_root_folder()
         else:
-            self.root_folder_abs_directory = '/'
+            self.root_folder_abs_directory = ''
             self.current_path = self.get_current_folder()
 
     def get_current_folder(self):
@@ -101,6 +99,14 @@ class FileManager:
             return ''
         else:
             return 'Directory not found'
+
+    def delete_file(self, simplified_abs_path, file_name):
+        complete_path = path.join(self.root_folder_abs_directory, simplified_abs_path, file_name)
+        if path.exists(complete_path):
+            remove(complete_path)
+            return ''
+        else:
+            return 'File not found'
 
     def list_items(self, directory=None):
         if directory is None:

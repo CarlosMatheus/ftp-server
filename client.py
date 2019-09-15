@@ -74,8 +74,12 @@ class Client(Commander):
         """
         _, file_name = os.path.split(path)
         print('seeeeeeeeeeeeeeeeeeeeeeeeeeeeeending')
-        with open(path, 'rb') as f:
-            self.socket.sendfile(f, 0)
+        if os.path.exists(path):
+            with open(path, 'rb') as f:
+                self.socket.sendfile(f, 0)
+            print(1)
+        else:
+            self.throw_error('File does not exist: %s' % path)
 
     def print_invalid_message(self, message=''):
         if not message:
@@ -169,25 +173,30 @@ class Client(Commander):
             return
 
         if len(args_list) == 2:
+
+            # Check if the folder where you want to put the file exists
             message = "%s %s" % (COMMAND_LIST[1], args_list[1])
             answer = self.send_message(message).decode()
-            # print(answer)
+
             if self.is_error(answer):
                 self.throw_error(answer)
                 return
+            ########
 
+            # Check if the file you want to put already exists
             message = "%s %s" % (COMMAND_LIST[1], os.path.join(args_list[1], file_name))
             server_side_file = os.path.join(args_list[1], file_name)
         else:
+            # Check if the file you want to put already exists
             message = "%s %s" % (COMMAND_LIST[1], file_name)
             server_side_file = file_name
 
         answer = self.send_message(message).decode()
+        # It is expected the answer to be an error,
+        # but if it is "not a directory" means that the file already exists
         if self.is_error(answer):
             answer = answer.replace(INVALID, '')
-            # print(answer)
             if answer == ERROR_NOT_A_DIRECTORY:
-                # problem
                 self.throw_error('There already are a file on that directory with that name.')
                 ans = ''
                 while ans != 'no' and ans != 'yes':
@@ -195,7 +204,6 @@ class Client(Commander):
                 if ans == 'no':
                     return
                 else:
-                    # Delete the file
                     self.delete_command([server_side_file])
         else:
             self.throw_error('There already are a folder on that directory with that name.')
@@ -205,7 +213,6 @@ class Client(Commander):
             if ans == 'no':
                 return
             else:
-                # Delete the folder
                 self.rmdir_command([server_side_file])
 
         if len(args_list) == 1:
@@ -222,8 +229,14 @@ class Client(Commander):
             self.send_file(os.path.join(simplified_path, file_name))
 
     def delete_command(self, args_list):
-        print('todo: implement this')
-        pass
+        if not args_list:
+            print('Need to specify the file name')
+        else:
+            path = args_list[0]
+            message = "%s %s" % (COMMAND_LIST[7], path)
+            answer = self.send_message(message).decode()
+            if self.is_error(answer):
+                self.throw_error(answer)
 
     def close_command(self, args_list):
         print('todo: implement this')
