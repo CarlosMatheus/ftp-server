@@ -32,6 +32,7 @@ class Commander(ABC):
             self.open_command,
             self.quit_command,
             self.unknown_command,
+            self.empty_command,
         ]
         return CommandLine(method_list)
 
@@ -81,4 +82,8 @@ class Commander(ABC):
 
     @abstractmethod
     def unknown_command(self, args_list):
+        pass
+
+    @abstractmethod
+    def empty_command(self, args_list):
         pass

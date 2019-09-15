@@ -239,3 +239,6 @@ class Server(Commander):
     def unknown_command(self, args_list):
         print('todo: implent this')
         pass
+
+    def empty_command(self, args_list):
+        pass

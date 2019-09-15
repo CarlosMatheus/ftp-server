@@ -150,15 +150,42 @@ class Client(Commander):
                 self.throw_error(answer)
 
     def get_command(self, args_list):
+        """
+
+        :param args_list:
+        :return:
+        """
+
+        # get file from there
+
+        # get simplified path here
+
+        # Verify if file exists here:
+            # if yes ask if want to replace
+                # if yes delete local and continue
+                # if no stop
+            # if no continue
+
+        # write file
+
         print('todo: implement this')
         pass
 
     def put_command(self, args_list):
         """
+        usage:
+            put <{file_directory_on_client}/{file_name_on_client}> [{file_directory_on_server}/]
+        Example:
+            put ITA_logo.png
+            put ITA_logo.png test_folder/
+            put folder/ITA_logo.png test_folder/
+            put folder/ITA_logo.png
+
         It is possible to use with 1 or 2 arguments
         with 1 argument -> the single argument passed will be the file name(location) on the client side
-        with 2 arguments -> the first first will be the same as with 1 and the second will be the location (the directory) to
-                            put on the server side
+        with 2 arguments -> the first first will be the same as with 1 and the second will be the location
+                            (the directory) to put on the server side
+
         :param args_list: list of arguments
         """
         if not args_list:
@@ -251,5 +278,7 @@ class Client(Commander):
         pass
 
     def unknown_command(self, args_list):
-        print('todo: implent this')
+        print('Unknown command')
+
+    def empty_command(self, args_list):
         pass
