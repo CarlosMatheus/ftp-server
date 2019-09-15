@@ -24,7 +24,6 @@ class FileManager:
         if not path.exists(ROOT_DIR_NAME):
             mkdir(ROOT_DIR_NAME)
         self.root_folder_abs_directory = path.join(self.get_current_folder(), ROOT_DIR_NAME)
-        # print(self.root_folder_abs_directory)
 
     def resolve_path(self, relative_path):
         error, simplified_path = self.validate_relative_path(relative_path)
@@ -121,6 +120,16 @@ class FileManager:
             lt = listdir(abs_path)
             return '', lt
 
+    def read_file(self, simplified_abs_path, file_name, connection):
+        complete_path = path.join(self.root_folder_abs_directory, simplified_abs_path, file_name)
+        if path.exists(complete_path):
+            connection.sendall('ok'.encode())
+            with open(complete_path, 'rb') as f:
+                connection.sendfile(f, 0)
+            return ''
+        else:
+            return 'File does not exist'
+
     def write_file(self, simplified_abs_path, file_name, file_data=None):
         """
         Will return error in case the directory does not exist, or the file already exists
@@ -135,13 +144,9 @@ class FileManager:
         simplified_abs_path = path.join(self.root_folder_abs_directory, simplified_abs_path)
         if not path.exists(complete_path):
             if file_data is not None:
-                print('cccccccccc')
                 if not path.exists(simplified_abs_path):
-                    print('???????')
-                    print(simplified_abs_path)
                     return 'File path does not exist'
                 else:
-                    print('ddddddddddd')
                     f = open(complete_path, 'wb+')
                     f.write(file_data)
             return ''

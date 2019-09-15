@@ -117,7 +117,6 @@ class Server(Commander):
             except:
                 print(1)
         else:
-            # self.connection.setblocking(False)
             self.connection.settimeout(0.2)
             while True:
                 try:
@@ -127,9 +126,7 @@ class Server(Commander):
                     received_byte_list.append(data)
                 except:
                     break
-            # self.connection.setblocking(True)
             self.connection.settimeout(None)
-                # self.connection.send(b'I am server \n')
         return received_byte_list
 
     def decode(self, received_byte_list):
@@ -173,7 +170,7 @@ class Server(Commander):
         else:
             self.connection.sendall(self.file_manager.current_path.encode())
 
-    def interact(self, args_list, function):
+    def interact(self, args_list, function, extra_arg=None):
         """
         Generic function to do something to a item (the item can be ether a directory or file)
         :param args_list: It is a list
@@ -197,13 +194,17 @@ class Server(Commander):
             self.item_name = item_name
 
             if error:
-                error = self.send_error(error)
-            else:
-                error = function(simplified_item_path, item_name)
-                if error:
+                if not extra_arg:
                     error = self.send_error(error)
+            else:
+                if not extra_arg:
+                    error = function(simplified_item_path, item_name)
+                    if error:
+                        error = self.send_error(error)
+                    else:
+                        self.connection.sendall('ok'.encode())
                 else:
-                    self.connection.sendall('ok'.encode())
+                    error = function(simplified_item_path, item_name, extra_arg)
         return error
 
     def mkdir_command(self, args_list):
@@ -216,7 +217,9 @@ class Server(Commander):
         self.interact(args_list, self.file_manager.delete_file)
 
     def get_command(self, args_list):
-        pass
+        error = self.interact(args_list, self.file_manager.read_file, extra_arg=self.connection)
+        if error:
+            self.send_error(error)
 
     def put_command(self, args_list):
         if not args_list:
@@ -224,7 +227,6 @@ class Server(Commander):
         elif len(args_list) == 1:
             error = self.interact(args_list, self.file_manager.write_file)
             if not error:
-                print('aaaaaaaaaaaaaaaaaaaaaaaaaaa')
                 self.state = WRITING_FILE
 
     def close_command(self, args_list):
@@ -237,7 +239,6 @@ class Server(Commander):
         pass
 
     def unknown_command(self, args_list):
-        print('todo: implent this')
         pass
 
     def empty_command(self, args_list):

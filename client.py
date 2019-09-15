@@ -73,11 +73,9 @@ class Client(Commander):
         :param path: the client path to the file (dir+file_name)
         """
         _, file_name = os.path.split(path)
-        print('seeeeeeeeeeeeeeeeeeeeeeeeeeeeeending')
         if os.path.exists(path):
             with open(path, 'rb') as f:
                 self.socket.sendfile(f, 0)
-            print(1)
         else:
             self.throw_error('File does not exist: %s' % path)
 
@@ -149,6 +147,27 @@ class Client(Commander):
             if self.is_error(answer):
                 self.throw_error(answer)
 
+    def get_file(self) -> "bytes":
+        """
+        Get files from server
+        :return: the data
+        """
+
+        received_byte_list = list()
+        self.socket.settimeout(1)
+
+        while True:
+            try:
+                data = self.socket.recv(CONNECTION_BYTES)
+                if not data:
+                    break
+                received_byte_list.append(data)
+            except:
+                break
+
+        self.socket.settimeout(None)
+        return b''.join(received_byte_list)
+
     def get_command(self, args_list):
         """
 
@@ -157,6 +176,17 @@ class Client(Commander):
         """
 
         # get file from there
+        path = args_list[0]
+        message = "%s %s" % (COMMAND_LIST[5], path)
+        answer = self.send_message(message).decode()
+        if self.is_error(answer):
+            self.throw_error(answer)
+            return
+
+        file_data = self.get_file()
+        print(file_data[:100])
+        f = open('asdf.png', 'wb+')
+        f.write(file_data)
 
         # get simplified path here
 
@@ -167,9 +197,6 @@ class Client(Commander):
             # if no continue
 
         # write file
-
-        print('todo: implement this')
-        pass
 
     def put_command(self, args_list):
         """
