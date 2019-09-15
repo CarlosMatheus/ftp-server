@@ -176,8 +176,6 @@ class Client(Commander):
         :return:
         """
 
-        file_manager = FileManager(no_root_folder=True)
-
         if not args_list:
             print('Need to specify the file')
             return
@@ -196,27 +194,19 @@ class Client(Commander):
 
         if len(args_list) > 1:
             path = args_list[1]
-            # error, simplified_abs_path = file_manager.validate_relative_path(path)
             error, simplified_abs_path = self.file_manager.validate_relative_path(path)
         else:
-            # error, simplified_abs_path = file_manager.validate_relative_path('')
             error, simplified_abs_path = self.file_manager.validate_relative_path('')
 
         if error:
             return self.throw_error(error)
 
-        # aux = self.file_manager.root_folder_abs_directory
-        # self.file_manager.root_folder_abs_directory = self.file_manager.current_path
         error = self.file_manager.write_file(simplified_abs_path, file_name, file_data=file_data)
-        # error = file_manager.write_file(simplified_abs_path, file_name, file_data=file_data)
-        # self.file_manager.root_folder_abs_directory = aux
 
         if error:
             if error == ERROR_FILE_ALREADY_EXIST:
                 self.throw_error('There already are a file on that directory with that name.')
-
                 ans = ''
-
                 while ans != 'no' and ans != 'yes':
                     ans = input('Do you want to replace the file? (Yes/No) ').lower()
 
@@ -224,17 +214,13 @@ class Client(Commander):
                     return
                 else:
                     error = self.file_manager.delete_file(simplified_abs_path, file_name)
-                    # error = file_manager.delete_file(simplified_abs_path, file_name)
                     if error:
                         return self.throw_error(error)
-                    # error = file_manager.write_file(simplified_abs_path, file_name, file_data=file_data)
                     error = self.file_manager.write_file(simplified_abs_path, file_name, file_data=file_data)
                     if error:
                         return self.throw_error(error)
             else:
                 return self.throw_error(error)
-
-    # def write_with_
 
     def put_command(self, args_list):
         """
@@ -331,16 +317,16 @@ class Client(Commander):
                 self.throw_error(answer)
 
     def close_command(self, args_list):
+        self.socket.close()
         print('todo: implement this')
-        pass
 
     def open_command(self, args_list):
         print('todo: implement this')
         pass
 
     def quit_command(self, args_list):
-        print('todo: implement this')
-        pass
+        self.close_command(args_list)
+        exit()
 
     def unknown_command(self, args_list):
         print('Unknown command')
