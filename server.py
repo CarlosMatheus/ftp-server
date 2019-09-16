@@ -3,7 +3,6 @@ from utils import \
     READING, \
     TEST_STRING, \
     TESTING, \
-    DEFAULT_SEND_BACK_MESSAGE, \
     CONNECTION_BYTES, \
     FILE_STRING, \
     WRITING_FILE, \
@@ -18,51 +17,58 @@ from file_manager import FileManager
 from commander import Commander
 from os import path
 
+# todo: create new server object when accept the connection
 
 class Server(Commander):
 
-    def __init__(self, address=DEFAULT_ADDRESS):
+    def __init__(self, connection=None, address=None):
         super().__init__()
+
+        self.connection = connection
         self.address = address
-        self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server.bind(self.address)
-        self.server.listen(5)
-        # self.command_line = self.setup_command_line()
-        # self.state = WRITING_FILE
-        # self.state = TESTING
+
         self.data_received = ''
         self.function_switcher = self.setup_function_switcher()
         self.file_manager = FileManager()
 
-        # todo: change this part:
-        # self.current_folder = ''
-        # self.file_name = 'ITA_logo.png'
         self.simplified_abs_path = ''
         self.item_name = ''
         self.state = USER_AUTH
 
         self.password_hash = 'b7e94be513e96e8c45cd23d162275e5a12ebde9100a425c4ebcdd7fa4dcd897c'
 
-        self.execute_server_listener()
+        if connection is None:
+            self.address = ('0.0.0.0', int(input('Which port to open the server? ')))
+
+            self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.server.bind(self.address)
+            self.server.listen(5)
+            self.execute_server_listener()
+        else:
+            self.server_loop()
 
     def server_loop(self):
         print('Waiting for user authentication')
         self.state = USER_AUTH
         while True:
-            print('Awaiting message')
+            server_log('Awaiting message')
             received_byte_list = self.get_byte_list()
-            print('Decoding received message')
+            server_log('Decoding received message')
             self.data_received = self.decode(received_byte_list)
-            print('Executing message')
+            if not self.data_received:
+                server_log('Connection lost')
+                return
+            server_log('Executing message')
             self.function_switcher[self.state]()
-            print('Concluded')
+            server_log('Concluded')
 
     def execute_server_listener(self):
+        print('Waiting for connections')
         while True:
-            self.connection, address = self.server.accept()
-            print('Connection established')
+            connection, address = self.server.accept()
+            server_log('Connection %s established to %s' % (connection, address))
             # todo: open thread for new server loop (possibly new object)
-            self.server_loop()
+            Server(connection, address)
 
     def setup_function_switcher(self):
         return {
