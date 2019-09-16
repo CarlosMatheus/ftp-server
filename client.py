@@ -20,14 +20,14 @@ from file_manager import FileManager
 class Client(Commander):
     def __init__(self):
         super().__init__()
-        self.address = ('','')
+        self.address = ('', 0)
         self.state = USER_AUTH
         self.switch_function = self.initiate_switch_function()
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        # self.socket.connect(self.address)
         self.current_path = '/'
         self.send_file_path = ''
         self.file_manager = FileManager(abs_root_folder=True)
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
         self.client_loop()
 
         self.socket.close()
@@ -43,7 +43,10 @@ class Client(Commander):
         }
 
     def execute_read_command_loop(self):
-        self.data_received = input(self.address[0] + ':' + str(self.address[1]) + ' > ' + self.current_path + '$ ')
+        if self.state == READING:
+            self.data_received = input(self.address[0] + ':' + str(self.address[1]) + ' > ' + self.current_path + '$ ')
+        else:
+            self.data_received = input(' > ')
         self.read_command()
 
     def authenticate_user(self):
@@ -346,7 +349,7 @@ class Client(Commander):
             return self.throw_not_auth_error()
 
         self.socket.close()
-        print('todo: implement this')
+        self.state = USER_AUTH
 
     def open_command(self, args_list):
         if not args_list:
@@ -359,11 +362,14 @@ class Client(Commander):
             return self.throw_error('Wrong address format')
 
         try:
+            self.socket.settimeout(1)
             address = (address[0], int(address[1]))
             self.socket.connect(address)
         except Exception as err:
             self.throw_error('Connection failed %s' % err)
+            self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             return
+        self.socket.settimeout(None)
 
         self.authenticate_user()
         if self.state == READING:
@@ -371,7 +377,7 @@ class Client(Commander):
 
     def quit_command(self, args_list):
         if self.is_not_authenticated():
-            return self.throw_not_auth_error()
+            exit()
 
         self.close_command(args_list)
         exit()
