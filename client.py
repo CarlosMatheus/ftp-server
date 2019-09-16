@@ -18,14 +18,13 @@ from file_manager import FileManager
 
 
 class Client(Commander):
-    def __init__(self, address=DEFAULT_ADDRESS):
+    def __init__(self):
         super().__init__()
-        self.address = address
-        self.socket = None
+        self.address = ('','')
         self.state = USER_AUTH
         self.switch_function = self.initiate_switch_function()
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.socket.connect(self.address)
+        # self.socket.connect(self.address)
         self.current_path = '/'
         self.send_file_path = ''
         self.file_manager = FileManager(abs_root_folder=True)
@@ -39,7 +38,7 @@ class Client(Commander):
 
     def initiate_switch_function(self):
         return {
-            USER_AUTH: self.authenticate_user,
+            USER_AUTH: self.execute_read_command_loop,
             READING: self.execute_read_command_loop,
         }
 
@@ -48,9 +47,11 @@ class Client(Commander):
         self.read_command()
 
     def authenticate_user(self):
-        user_input = input('Please enter the password:')
+        user_input = input('Please enter the password: ')
+
         password_hash = sha(user_input.encode()).hexdigest()
         answer = self.send_message(password_hash).decode()
+
         if answer == CONNECTION_ACCEPTED:
             self.state = READING
         elif answer == CONNECTION_DENIED:
@@ -94,6 +95,9 @@ class Client(Commander):
         self.print_invalid_message(message)
 
     def cd_command(self, args_list):
+        if self.is_not_authenticated():
+            return self.throw_not_auth_error()
+
         if not args_list:
             path = ''
         else:
@@ -113,6 +117,9 @@ class Client(Commander):
             self.current_path = answer
 
     def ls_command(self, args_list):
+        if self.is_not_authenticated():
+            return self.throw_not_auth_error()
+
         if not args_list:
             message = "%s" % (COMMAND_LIST[1])
         else:
@@ -126,9 +133,15 @@ class Client(Commander):
                 print(item[1:-1])
 
     def pwd_command(self, args_list):
+        if self.is_not_authenticated():
+            return self.throw_not_auth_error()
+
         print(self.current_path)
 
     def mkdir_command(self, args_list):
+        if self.is_not_authenticated():
+            return self.throw_not_auth_error()
+
         if not args_list:
             print('Need to specify directory name')
         else:
@@ -139,6 +152,9 @@ class Client(Commander):
                 self.throw_error(answer)
 
     def rmdir_command(self, args_list):
+        if self.is_not_authenticated():
+            return self.throw_not_auth_error()
+
         if not args_list:
             print('Need to specify directory name')
         else:
@@ -153,6 +169,8 @@ class Client(Commander):
         Get files from server
         :return: the data
         """
+        if self.is_not_authenticated():
+            return self.throw_not_auth_error()
 
         received_byte_list = list()
         self.socket.settimeout(0.2)
@@ -175,6 +193,8 @@ class Client(Commander):
         :param args_list:
         :return:
         """
+        if self.is_not_authenticated():
+            return self.throw_not_auth_error()
 
         if not args_list:
             print('Need to specify the file')
@@ -239,6 +259,9 @@ class Client(Commander):
 
         :param args_list: list of arguments
         """
+        if self.is_not_authenticated():
+            return self.throw_not_auth_error()
+
         if not args_list:
             self.throw_error('Need to specify file name')
             return
@@ -307,6 +330,8 @@ class Client(Commander):
             self.send_file(os.path.join(simplified_path, file_name))
 
     def delete_command(self, args_list):
+        if self.is_not_authenticated():
+            return self.throw_not_auth_error()
         if not args_list:
             print('Need to specify the file name')
         else:
@@ -317,14 +342,37 @@ class Client(Commander):
                 self.throw_error(answer)
 
     def close_command(self, args_list):
+        if self.is_not_authenticated():
+            return self.throw_not_auth_error()
+
         self.socket.close()
         print('todo: implement this')
 
     def open_command(self, args_list):
-        print('todo: implement this')
-        pass
+        if not args_list:
+            return self.throw_error('Need to specify the server. Example: open 0.0.0.0:8080')
+        if len(args_list) > 1:
+            return self.throw_error('Too many arguments')
+
+        address = args_list[0].split(':')
+        if len(address) < 2:
+            return self.throw_error('Wrong address format')
+
+        try:
+            address = (address[0], int(address[1]))
+            self.socket.connect(address)
+        except Exception as err:
+            self.throw_error('Connection failed %s' % err)
+            return
+
+        self.authenticate_user()
+        if self.state == READING:
+            self.address = address
 
     def quit_command(self, args_list):
+        if self.is_not_authenticated():
+            return self.throw_not_auth_error()
+
         self.close_command(args_list)
         exit()
 
@@ -333,3 +381,9 @@ class Client(Commander):
 
     def empty_command(self, args_list):
         pass
+
+    def is_not_authenticated(self):
+        return self.state == USER_AUTH
+
+    def throw_not_auth_error(self):
+        self.throw_error("You need to connect to a server first, use the 'open' command")
