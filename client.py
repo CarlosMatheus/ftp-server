@@ -369,11 +369,14 @@ class Client(Commander):
             self.throw_error('Connection failed %s' % err)
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             return
+
         self.socket.settimeout(None)
 
         self.authenticate_user()
         if self.state == READING:
             self.address = address
+        else:
+            self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     def quit_command(self, args_list):
         if self.is_not_authenticated():

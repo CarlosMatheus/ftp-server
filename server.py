@@ -16,6 +16,7 @@ from command_line import CommandLine
 from file_manager import FileManager
 from commander import Commander
 from os import path
+from _thread import start_new_thread
 
 # todo: create new server object when accept the connection
 
@@ -39,7 +40,6 @@ class Server(Commander):
 
         if connection is None:
             self.address = ('0.0.0.0', int(input('Which port to open the server? ')))
-
             self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.server.bind(self.address)
             self.server.listen(5)
@@ -68,7 +68,7 @@ class Server(Commander):
             connection, address = self.server.accept()
             server_log('Connection %s established to %s' % (connection, address))
             # todo: open thread for new server loop (possibly new object)
-            Server(connection, address)
+            start_new_thread(Server, (connection, address))
 
     def setup_function_switcher(self):
         return {
