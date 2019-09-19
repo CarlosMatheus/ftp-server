@@ -15,11 +15,12 @@ from file_manager import FileManager
 from commander import Commander
 from os import path
 from _thread import start_new_thread
+from hashlib import sha256
 
 
 class Server(Commander):
 
-    def __init__(self, connection=None, address=None):
+    def __init__(self, connection=None, address=None, password_hash=None):
         super().__init__()
 
         self.connection = connection
@@ -33,13 +34,14 @@ class Server(Commander):
         self.item_name = ''
         self.state = USER_AUTH
 
-        self.password_hash = 'b7e94be513e96e8c45cd23d162275e5a12ebde9100a425c4ebcdd7fa4dcd897c'
+        self.password_hash = password_hash
 
         if connection is None:
             self.address = ('0.0.0.0', int(input('Which port to open the server? ')))
             self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.server.bind(self.address)
             self.server.listen(5)
+            self.password_hash = sha256(input('What will be the server password? ').encode()).hexdigest()
             self.execute_server_listener()
         else:
             self.server_loop()
@@ -65,7 +67,7 @@ class Server(Commander):
             connection, address = self.server.accept()
             server_log('Connection %s established to %s' % (connection, address))
             # todo: open thread for new server loop (possibly new object)
-            start_new_thread(Server, (connection, address))
+            start_new_thread(Server, (connection, address, self.password_hash))
 
     def setup_function_switcher(self):
         return {
