@@ -1,13 +1,28 @@
 from abc import ABC, abstractmethod
-from command_line import CommandLine
+from utils import COMMAND_LIST, UNKNOWN_COMMAND
 
 
 class Commander(ABC):
 
     def __init__(self):
         super().__init__()
-        self.command_line = self.setup_command_line()
         self.data_received = ''
+        self.method_hash = dict()
+        self.command_list = list()
+
+        self.setup_command_line()
+
+    def initiate_command_line(self, method_list):
+        self.command_list = COMMAND_LIST
+
+        for idx, command in enumerate(self.command_list):
+            self.method_hash[command] = method_list[idx]
+
+    def execute_command(self, command, arg_list):
+        if command in self.method_hash:
+            self.method_hash[command](arg_list)
+        else:
+            self.method_hash[UNKNOWN_COMMAND](arg_list)
 
     @staticmethod
     def unpack_command(data_received):
@@ -16,7 +31,7 @@ class Commander(ABC):
 
     def read_command(self):
         command, arg_list = self.unpack_command(self.data_received)
-        self.command_line.execute_command(command, arg_list)
+        self.execute_command(command, arg_list)
 
     def setup_command_line(self):
         method_list = [
@@ -34,7 +49,7 @@ class Commander(ABC):
             self.unknown_command,
             self.empty_command,
         ]
-        return CommandLine(method_list)
+        self.initiate_command_line(method_list)
 
     @abstractmethod
     def cd_command(self, args_list):

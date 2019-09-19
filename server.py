@@ -1,5 +1,4 @@
 from utils import \
-    DEFAULT_ADDRESS, \
     READING, \
     TEST_STRING, \
     TESTING, \
@@ -12,7 +11,6 @@ from utils import \
     INVALID, \
     server_log
 import socket
-from command_line import CommandLine
 from file_manager import FileManager
 from commander import Commander
 from os import path
