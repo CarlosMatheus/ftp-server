@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  22 AUG 2019 02:51
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  19 SEP 2019 16:10
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -86,18 +86,18 @@ Package: listings 2015/06/04 1.6 (Carsten Heinz)
  (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
  (/usr/local/texlive/2018/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count98
@@ -154,80 +154,63 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
 \c@lstlisting=\count104
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <10.95> on input line 40.
+(Font)              <10.95> on input line 42.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 40.
+(Font)              <8> on input line 42.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 40.
+(Font)              <6> on input line 42.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <9> on input line 40.
+(Font)              <9> on input line 42.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 40.
-<./imgs/task1_example_model.jpeg, id=1, 509.905pt x 266.9975pt>
-File: ./imgs/task1_example_model.jpeg Graphic file (type jpg)
-<use ./imgs/task1_example_model.jpeg>
-Package pdftex.def Info: ./imgs/task1_example_model.jpeg  used on input line 50.
-(pdftex.def)             Requested size: 289.07999pt x 151.37534pt.
- (/usr/local/texlive/2018/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2015/06/04 1.6 listings language file
-) (./code1.txt)
-<./imgs/task1_example_window1.png, id=2, 958.58125pt x 519.9425pt>
-File: ./imgs/task1_example_window1.png Graphic file (type png)
-<use ./imgs/task1_example_window1.png>
-Package pdftex.def Info: ./imgs/task1_example_window1.png  used on input line 65.
-(pdftex.def)             Requested size: 325.215pt x 176.3973pt.
+(Font)              <5> on input line 42.
+ [1
+
+{/usr/local/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+
+LaTeX Warning: Reference `code_code1' on page 2 undefined on input line 92.
 
 
-LaTeX Warning: `h' float specifier changed to `ht'.
+LaTeX Warning: Reference `img_task1' on page 2 undefined on input line 94.
 
-<./imgs/task1_example_window2.png, id=4, 958.58125pt x 519.9425pt>
-File: ./imgs/task1_example_window2.png Graphic file (type png)
-<use ./imgs/task1_example_window2.png>
-Package pdftex.def Info: ./imgs/task1_example_window2.png  used on input line 73.
-(pdftex.def)             Requested size: 325.215pt x 176.3973pt.
 
-LaTeX Warning: `h' float specifier changed to `ht'.
+LaTeX Warning: Reference `img_task1_example_window1' on page 2 undefined on input line 94.
 
-<./imgs/task1_example_window3.png, id=5, 958.58125pt x 519.9425pt>
-File: ./imgs/task1_example_window3.png Graphic file (type png)
-<use ./imgs/task1_example_window3.png>
-Package pdftex.def Info: ./imgs/task1_example_window3.png  used on input line 81.
-(pdftex.def)             Requested size: 325.215pt x 176.3973pt.
 
-LaTeX Warning: `h' float specifier changed to `ht'.
+LaTeX Warning: Reference `img_task1_example_window3' on page 2 undefined on input line 94.
 
-<./imgs/task1_built_case_model.png, id=6, 944.52875pt x 774.895pt>
+
+LaTeX Warning: Reference `img_task1' on page 2 undefined on input line 135.
+
+[2]
+
+LaTeX Warning: Reference `img_task1' on page 3 undefined on input line 141.
+
+<./imgs/task1_built_case_model.png, id=16, 944.52875pt x 774.895pt>
 File: ./imgs/task1_built_case_model.png Graphic file (type png)
 <use ./imgs/task1_built_case_model.png>
-Package pdftex.def Info: ./imgs/task1_built_case_model.png  used on input line 98.
+Package pdftex.def Info: ./imgs/task1_built_case_model.png  used on input line 146.
 (pdftex.def)             Requested size: 216.81pt x 177.86739pt.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-(./code2.txt [1
-
-{/usr/local/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./imgs/task1_example_model.jpeg>])
+(/usr/local/texlive/2018/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2015/06/04 1.6 listings language file
+) (./code2.txt)
 <./imgs/task1_buit_test_window1.png, id=18, 958.58125pt x 519.9425pt>
 File: ./imgs/task1_buit_test_window1.png Graphic file (type png)
 <use ./imgs/task1_buit_test_window1.png>
-Package pdftex.def Info: ./imgs/task1_buit_test_window1.png  used on input line 116.
+Package pdftex.def Info: ./imgs/task1_buit_test_window1.png  used on input line 164.
 (pdftex.def)             Requested size: 325.215pt x 176.3973pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
 <./imgs/task1_buit_test_window2.png, id=19, 958.58125pt x 519.9425pt>
 File: ./imgs/task1_buit_test_window2.png Graphic file (type png)
 <use ./imgs/task1_buit_test_window2.png>
-Package pdftex.def Info: ./imgs/task1_buit_test_window2.png  used on input line 124.
+Package pdftex.def Info: ./imgs/task1_buit_test_window2.png  used on input line 172.
 (pdftex.def)             Requested size: 325.215pt x 176.3973pt.
+
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 <./imgs/task1_buit_test_window3.png, id=20, 958.58125pt x 519.9425pt>
 File: ./imgs/task1_buit_test_window3.png Graphic file (type png)
 <use ./imgs/task1_buit_test_window3.png>
-Package pdftex.def Info: ./imgs/task1_buit_test_window3.png  used on input line 132.
+Package pdftex.def Info: ./imgs/task1_buit_test_window3.png  used on input line 180.
 (pdftex.def)             Requested size: 325.215pt x 176.3973pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -235,16 +218,19 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <./imgs/task1_buit_test_window4.png, id=21, 958.58125pt x 519.9425pt>
 File: ./imgs/task1_buit_test_window4.png Graphic file (type png)
 <use ./imgs/task1_buit_test_window4.png>
-Package pdftex.def Info: ./imgs/task1_buit_test_window4.png  used on input line 140.
+Package pdftex.def Info: ./imgs/task1_buit_test_window4.png  used on input line 188.
 (pdftex.def)             Requested size: 325.215pt x 176.3973pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[2 <./imgs/task1_example_window1.png> <./imgs/task1_example_window2.png>]
+
+LaTeX Warning: Reference `img_task1' on page 3 undefined on input line 194.
+
+[3 <./imgs/task1_built_case_model.png> <./imgs/task1_buit_test_window1.png>]
 <./imgs/task2_example_model.jpeg, id=27, 452.69125pt x 230.8625pt>
 File: ./imgs/task2_example_model.jpeg Graphic file (type jpg)
 <use ./imgs/task2_example_model.jpeg>
-Package pdftex.def Info: ./imgs/task2_example_model.jpeg  used on input line 158.
+Package pdftex.def Info: ./imgs/task2_example_model.jpeg  used on input line 206.
 (pdftex.def)             Requested size: 289.07999pt x 147.42387pt.
 
 
@@ -254,35 +240,33 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <./imgs/task2_example_window1.png, id=28, 958.58125pt x 519.9425pt>
 File: ./imgs/task2_example_window1.png Graphic file (type png)
 <use ./imgs/task2_example_window1.png>
-Package pdftex.def Info: ./imgs/task2_example_window1.png  used on input line 173.
+Package pdftex.def Info: ./imgs/task2_example_window1.png  used on input line 221.
 (pdftex.def)             Requested size: 325.215pt x 176.3973pt.
-
+ [4 <./imgs/task1_buit_test_window2.png> <./imgs/task1_buit_test_window3.png>]
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<./imgs/task2_example_window2.png, id=29, 958.58125pt x 519.9425pt>
+<./imgs/task2_example_window2.png, id=34, 958.58125pt x 519.9425pt>
 File: ./imgs/task2_example_window2.png Graphic file (type png)
 <use ./imgs/task2_example_window2.png>
-Package pdftex.def Info: ./imgs/task2_example_window2.png  used on input line 181.
+Package pdftex.def Info: ./imgs/task2_example_window2.png  used on input line 229.
 (pdftex.def)             Requested size: 325.215pt x 176.3973pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<./imgs/task2_example_window3.png, id=30, 958.58125pt x 519.9425pt>
+<./imgs/task2_example_window3.png, id=35, 958.58125pt x 519.9425pt>
 File: ./imgs/task2_example_window3.png Graphic file (type png)
 <use ./imgs/task2_example_window3.png>
-Package pdftex.def Info: ./imgs/task2_example_window3.png  used on input line 189.
+Package pdftex.def Info: ./imgs/task2_example_window3.png  used on input line 237.
 (pdftex.def)             Requested size: 325.215pt x 176.3973pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[3 <./imgs/task1_example_window3.png> <./imgs/task1_built_case_model.png>]
 <./imgs/task2_built_case_model.jpeg, id=36, 803.0pt x 261.97874pt>
 File: ./imgs/task2_built_case_model.jpeg Graphic file (type jpg)
 <use ./imgs/task2_built_case_model.jpeg>
-Package pdftex.def Info: ./imgs/task2_built_case_model.jpeg  used on input line 207.
+Package pdftex.def Info: ./imgs/task2_built_case_model.jpeg  used on input line 255.
 (pdftex.def)             Requested size: 289.07999pt x 94.31227pt.
-
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
@@ -290,7 +274,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <./imgs/task2_buit_test_window1.png, id=37, 958.58125pt x 519.9425pt>
 File: ./imgs/task2_buit_test_window1.png Graphic file (type png)
 <use ./imgs/task2_buit_test_window1.png>
-Package pdftex.def Info: ./imgs/task2_buit_test_window1.png  used on input line 222.
+Package pdftex.def Info: ./imgs/task2_buit_test_window1.png  used on input line 270.
 (pdftex.def)             Requested size: 325.215pt x 176.3973pt.
 
 
@@ -299,7 +283,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <./imgs/task2_buit_test_window2.png, id=38, 958.58125pt x 519.9425pt>
 File: ./imgs/task2_buit_test_window2.png Graphic file (type png)
 <use ./imgs/task2_buit_test_window2.png>
-Package pdftex.def Info: ./imgs/task2_buit_test_window2.png  used on input line 230.
+Package pdftex.def Info: ./imgs/task2_buit_test_window2.png  used on input line 278.
 (pdftex.def)             Requested size: 325.215pt x 176.3973pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -307,25 +291,29 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <./imgs/task2_buit_test_window3.png, id=39, 958.58125pt x 519.9425pt>
 File: ./imgs/task2_buit_test_window3.png Graphic file (type png)
 <use ./imgs/task2_buit_test_window3.png>
-Package pdftex.def Info: ./imgs/task2_buit_test_window3.png  used on input line 238.
+Package pdftex.def Info: ./imgs/task2_buit_test_window3.png  used on input line 286.
 (pdftex.def)             Requested size: 325.215pt x 176.3973pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[4 <./imgs/task1_buit_test_window1.png> <./imgs/task1_buit_test_window2.png>] [5 <./imgs/task1_buit_test_window3.png> <./imgs/task1_buit_test_window4.png>] [6 <./imgs/task2_example_model.jpeg> <./imgs/task2_example_window1.png> <./imgs/task2_example_window2.png>] [7 <./imgs/task2_example_window3.png> <./imgs/task2_built_case_model.jpeg> <./imgs/task2_buit_test_window1.png>] [8 <./imgs/task2_buit_test_window2.png> <./imgs/task2_buit_test_window3.png>] (./main.aux) ) 
+[5 <./imgs/task1_buit_test_window4.png> <./imgs/task2_example_model.jpeg>] [6 <./imgs/task2_example_window1.png> <./imgs/task2_example_window2.png>] [7 <./imgs/task2_example_window3.png> <./imgs/task2_built_case_model.jpeg> <./imgs/task2_buit_test_window1.png>] [8 <./imgs/task2_buit_test_window2.png> <./imgs/task2_buit_test_window3.png>] (./main.aux)
+
+LaTeX Warning: There were undefined references.
+
+ ) 
 Here is how much of TeX's memory you used:
- 3842 strings out of 492649
- 54385 string characters out of 6129622
- 166590 words of memory out of 5000000
- 7665 multiletter control sequences out of 15000+600000
- 8847 words of font info for 31 fonts, out of 8000000 for 9000
+ 3822 strings out of 492649
+ 53686 string characters out of 6129622
+ 162336 words of memory out of 5000000
+ 7650 multiletter control sequences out of 15000+600000
+ 9155 words of font info for 32 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,8n,43p,397b,1665s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on main.pdf (8 pages, 709108 bytes).
+ 41i,8n,43p,507b,1238s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on main.pdf (8 pages, 612388 bytes).
 PDF statistics:
- 87 PDF objects out of 1000 (max. 8388607)
- 39 compressed objects within 1 object stream
+ 84 PDF objects out of 1000 (max. 8388607)
+ 42 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 86 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 66 words of extra memory for PDF output out of 10000 (max. 10000000)
 

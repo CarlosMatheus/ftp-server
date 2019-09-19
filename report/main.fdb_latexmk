@@ -1,6 +1,7 @@
 # Fdb version 3
-["pdflatex"] 1566453102 "main.tex" "main.pdf" "main" 1566453106
+["pdflatex"] 1568920246 "main.tex" "main.pdf" "main" 1568920250
   "/usr/local/texlive/2018/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
+  "/usr/local/texlive/2018/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm" 1480098701 1328 c834bbb027764024c09d3d2bf908b5f0 ""
   "/usr/local/texlive/2018/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm" 1480098701 1324 c910af8c371558dc20f2d7822f66fe64 ""
   "/usr/local/texlive/2018/texmf-dist/fonts/tfm/public/cm/cmmi10.tfm" 1480098701 1528 abec98dbc43e172678c11b3b9031252a ""
   "/usr/local/texlive/2018/texmf-dist/fonts/tfm/public/cm/cmmi6.tfm" 1480098701 1512 f21f83efb36853c0b70002322c1ab3ad ""
@@ -16,6 +17,7 @@
   "/usr/local/texlive/2018/texmf-dist/fonts/tfm/public/cm/cmsy8.tfm" 1480098701 1120 8b7d695260f3cff42e636090a8002094 ""
   "/usr/local/texlive/2018/texmf-dist/fonts/tfm/public/cm/cmsy9.tfm" 1480098701 1116 25a7bf822c58caf309a702ef79f4afbb ""
   "/usr/local/texlive/2018/texmf-dist/fonts/tfm/public/cm/cmti10.tfm" 1480098701 1480 aa8e34af0eb6a2941b776984cf1dfdc4 ""
+  "/usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb" 1480098733 34811 78b52f49e893bcba91bd7581cdc144c0 ""
   "/usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb" 1480098733 32080 340ef9bf63678554ee606688e7b5339d ""
   "/usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1480098733 35752 024fb6c41858982481f6968b5fc26508 ""
   "/usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb" 1480098733 32734 69e00a6b65cedb993666e42eedb3d48f ""
@@ -64,10 +66,6 @@
   "imgs/task1_buit_test_window2.png" 1566423376 129712 6f3eae021fc574bf9ba0ff25e44e7c9f ""
   "imgs/task1_buit_test_window3.png" 1566423381 133060 4a77f2f8378dc8fd5c0980fb2ac910ce ""
   "imgs/task1_buit_test_window4.png" 1566423387 146561 6975086313c0d8fc46f282521c39f32b ""
-  "imgs/task1_example_model.jpeg" 1566341174 12012 2e003b9c2f63a3dc0e674cfdd07fac27 ""
-  "imgs/task1_example_window1.png" 1566344760 131119 1ac56c5ee18cba719ab123ec6d0a3d70 ""
-  "imgs/task1_example_window2.png" 1566344770 130380 6fc93a740792f071c3eace7800946fb6 ""
-  "imgs/task1_example_window3.png" 1566344775 128795 14bc9bc3095cefa65bc1acb5d85e1bf1 ""
   "imgs/task2_built_case_model.jpeg" 1566424035 25905 48e64d5ebc453466d62172a517d735c7 ""
   "imgs/task2_buit_test_window1.png" 1566424420 148042 b1b0eb3a28d6f732620c1de1a449241d ""
   "imgs/task2_buit_test_window2.png" 1566424423 134094 6344410b11729608e029e5f1a0e69266 ""
@@ -76,8 +74,8 @@
   "imgs/task2_example_window1.png" 1566423926 132977 c77c57a433246968a2776d84c5d11a6a ""
   "imgs/task2_example_window2.png" 1566423928 130946 c67d427d2696c8626b2b2ae5d6145915 ""
   "imgs/task2_example_window3.png" 1566423933 129925 5756f03dd49a1401bd6f367c910dba4d ""
-  "main.aux" 1566453105 3832 4b1639256c8982e94865b112dd23c556 ""
-  "main.tex" 1566453101 9173 37f079fbb800beab28ceac40847d3210 ""
+  "main.aux" 1568920250 3317 05668a9e430be4502f281f98cce3beb4 ""
+  "main.tex" 1568920240 14476 d92db6ad434d9353110c47181fde557e ""
   (generated)
   "main.pdf"
   "main.log"
