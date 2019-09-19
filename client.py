@@ -396,3 +396,7 @@ class Client(Commander):
 
     def throw_not_auth_error(self):
         self.throw_error("You need to connect to a server first, use the 'open' command")
+
+
+if __name__ == "__main__":
+    Client()

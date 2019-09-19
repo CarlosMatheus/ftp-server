@@ -241,3 +241,7 @@ class Server(Commander):
 
     def empty_command(self, args_list):
         pass
+
+
+if __name__ == "__main__":
+    Server()
