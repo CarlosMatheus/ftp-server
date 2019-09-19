@@ -18,7 +18,6 @@ from commander import Commander
 from os import path
 from _thread import start_new_thread
 
-# todo: create new server object when accept the connection
 
 class Server(Commander):
 

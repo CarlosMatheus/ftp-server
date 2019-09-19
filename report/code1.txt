@@ -1,0 +1,3 @@
+Terminal 1: go run Process.go 1 :10004 :10003 :10002
+Terminal 2: go run Process.go 2 :10004 :10003 :10002
+Terminal 3: go run Process.go 3 :10004 :10003 :10002
